@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "socket.io-poco", "socket.io-poco\socket.io-poco.vcxproj", "{6D476F8D-A672-4C3A-BFC1-A20396736D85}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestClient", "TestClient\TestClient.vcxproj", "{75086192-48D0-44B3-8DCF-6CAF00286551}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6D476F8D-A672-4C3A-BFC1-A20396736D85}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6D476F8D-A672-4C3A-BFC1-A20396736D85}.Debug|Win32.Build.0 = Debug|Win32
+		{6D476F8D-A672-4C3A-BFC1-A20396736D85}.Release|Win32.ActiveCfg = Release|Win32
+		{6D476F8D-A672-4C3A-BFC1-A20396736D85}.Release|Win32.Build.0 = Release|Win32
+		{75086192-48D0-44B3-8DCF-6CAF00286551}.Debug|Win32.ActiveCfg = Debug|Win32
+		{75086192-48D0-44B3-8DCF-6CAF00286551}.Debug|Win32.Build.0 = Debug|Win32
+		{75086192-48D0-44B3-8DCF-6CAF00286551}.Release|Win32.ActiveCfg = Release|Win32
+		{75086192-48D0-44B3-8DCF-6CAF00286551}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
