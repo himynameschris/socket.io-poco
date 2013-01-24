@@ -50,10 +50,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)\socket.io-poco;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -83,6 +87,17 @@
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="TestClient.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\poco\Foundation\Foundation_vs100.vcxproj">
+      <Project>{8164d41d-b053-405b-826c-cf37ac0ef176}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\poco\Net\Net_vs100.vcxproj">
+      <Project>{b057a1fe-09f7-465e-b8b5-e1b659051d76}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\socket.io-poco\socket.io-poco.vcxproj">
+      <Project>{6d476f8d-a672-4c3a-bfc1-a20396736d85}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
