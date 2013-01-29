@@ -1,8 +1,5 @@
-#include "StdAfx.h"
 #include "SIOClient.h"
-#include <iostream>
 
-#include "Poco/Net/WebSocket.h"
 #include "Poco/Net/HTTPClientSession.h"
 #include "Poco/Net/HTTPRequest.h"
 #include "Poco/Net/HTTPResponse.h"
@@ -16,7 +13,7 @@
 #include <limits>
 
 using Poco::UInt16;
-using Poco::Net::WebSocket;
+
 using Poco::Net::HTTPClientSession;
 using Poco::Net::HTTPRequest;
 using Poco::Net::HTTPResponse;
@@ -24,13 +21,6 @@ using Poco::Net::HTTPMessage;
 using Poco::Net::NetException;
 using Poco::Net::SocketAddress;
 using Poco::StreamCopier;
-
-void pause()
-{
-    std::cout << "\nPress <ENTER> to continue . . .\n";
-	std::cin.get();
-    
-}
 
 SIOClient::SIOClient(void)
 {
@@ -64,7 +54,25 @@ bool SIOClient::handshake()
 
 	if (res->getStatus() != Poco::Net::HTTPResponse::HTTP_UNAUTHORIZED)
 	{
-		StreamCopier::copyStream(*rs, std::cout);
+		std::string temp;
+		std::stringstream session;
+
+		StreamCopier::copyToString(*rs, temp);
+
+		std::cout << "response: " << temp << "\n";
+		
+		for(std::string::size_type i = 0; i < temp.size(); ++i) {
+			
+			if(temp[i] == ':') break;
+			
+			session << temp[i];
+
+		}
+
+		std::cout << "session: " << session.str();
+
+		_sid = session.str();
+
 		return true;
 	}
 
@@ -77,27 +85,52 @@ bool SIOClient::init()
 
 	handshake();
 	
+	UInt16 aport = _port;
+	HTTPClientSession *session = new HTTPClientSession(_host, aport);
 
-	/*
+	HTTPRequest *req = new HTTPRequest(HTTPRequest::HTTP_GET,"/socket.io/1/websocket/"+_sid,HTTPMessage::HTTP_1_1);
 
-	
+	HTTPResponse *res = new HTTPResponse();
 
-	WebSocket *ws;
+	pauser();
 
 	try {
-		ws = new WebSocket(*session, *req, *res);
+		_ws = new WebSocket(*session, *req, *res);
 	}
 	catch(NetException ne) {
 		std::cout << ne.displayText() << " : " << ne.code() << " - " << ne.what() << "\n";
-		pause();
+		this->pauser();
 		return 0;
 	}
 
 	std::cout << "WebSocket Created\n";
-	*/
+
+	this->pauser();
 
 	
 
 	return true;
 
+}
+
+bool SIOClient::receive() {
+
+	char buffer[1024];
+	int flags;
+	int n;
+
+	n = _ws->receiveFrame(buffer, sizeof(buffer), flags);
+	std::cout << "bytes received: " << n << "\n";
+	std::cout << "Message received: \"" << buffer << "\"\n";
+
+	return true;
+
+}
+
+void SIOClient::pauser()
+{
+    std::cout << "\nPress <ENTER> to continue . . .\n";
+	std::cin.get();
+    
+	return;
 }
