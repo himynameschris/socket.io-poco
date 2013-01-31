@@ -4,9 +4,10 @@
 
 
 #include "Poco/Net/WebSocket.h"
-
+#include "Poco/Logger.h"
 
 using Poco::Net::WebSocket;
+using Poco::Logger;
 
 class SIOClient
 {
@@ -17,6 +18,9 @@ private:
 
 	WebSocket *_ws;
 
+	Logger *_logger;
+
+
 public:
 	__declspec(dllexport) SIOClient(void);
 	__declspec(dllexport) SIOClient(int port, std::string host);
@@ -25,6 +29,6 @@ public:
 	bool handshake();
 	bool init();
 	__declspec(dllexport) bool receive();
-	static __declspec(dllexport) void pauser();
+	__declspec(dllexport) void pauser();
 };
 

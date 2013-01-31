@@ -8,6 +8,7 @@
 #include "Poco/Net/SocketAddress.h"
 #include "Poco/StreamCopier.h"
 #include "Poco/Format.h"
+#include "Poco/WindowsConsoleChannel.h"
 #include <iostream>
 #include <sstream>
 #include <limits>
@@ -21,16 +22,20 @@ using Poco::Net::HTTPMessage;
 using Poco::Net::NetException;
 using Poco::Net::SocketAddress;
 using Poco::StreamCopier;
+using Poco::WindowsConsoleChannel;
 
 SIOClient::SIOClient(void)
 {
+	
 }
 
 SIOClient::SIOClient(int port, std::string host) :
 	_port(port),
 	_host(host)
 {
+	
 	init();
+
 }
 
 
@@ -59,7 +64,7 @@ bool SIOClient::handshake()
 
 		StreamCopier::copyToString(*rs, temp);
 
-		std::cout << "response: " << temp << "\n";
+		_logger->information("response: %s\n",temp);
 		
 		for(std::string::size_type i = 0; i < temp.size(); ++i) {
 			
@@ -69,7 +74,7 @@ bool SIOClient::handshake()
 
 		}
 
-		std::cout << "session: " << session.str();
+		_logger->information("session: %s",session.str());
 
 		_sid = session.str();
 
@@ -82,6 +87,8 @@ bool SIOClient::handshake()
 
 bool SIOClient::init()
 {
+	_logger = &(Logger::get("TestLogger"));
+	_logger->setChannel(new WindowsConsoleChannel());
 
 	handshake();
 	
@@ -103,16 +110,14 @@ bool SIOClient::init()
 		return 0;
 	}
 
-	std::cout << "WebSocket Created\n";
+	_logger->information("WebSocket Created\n");
 
 	this->pauser();
-
-	
 
 	return true;
 
 }
-
+ 
 bool SIOClient::receive() {
 
 	char buffer[1024];
@@ -120,8 +125,31 @@ bool SIOClient::receive() {
 	int n;
 
 	n = _ws->receiveFrame(buffer, sizeof(buffer), flags);
-	std::cout << "bytes received: " << n << "\n";
-	std::cout << "Message received: \"" << buffer << "\"\n";
+	_logger->information("bytes received: %d\n",n);
+
+
+	int control = buffer[0];
+
+	switch(control) {
+		case 0: 
+			std::cout << "0";
+				
+			break;
+		case 1: 
+			break;
+		case 2: 
+			break;
+	}
+
+
+
+
+	std::stringstream s;
+	for(int i = 0; i < n; i++) {
+		s << buffer[i];
+	}
+
+	_logger->information("Message received: \"%s\"\n",s.str());
 
 	return true;
 
@@ -129,7 +157,7 @@ bool SIOClient::receive() {
 
 void SIOClient::pauser()
 {
-    std::cout << "\nPress <ENTER> to continue . . .\n";
+    _logger->information("\nPress <ENTER> to continue . . .\n");
 	std::cin.get();
     
 	return;
