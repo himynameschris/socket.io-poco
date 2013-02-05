@@ -12,8 +12,8 @@
 #include <iostream>
 #include <sstream>
 #include <limits>
-
-using Poco::UInt16;
+#include "Poco/StringTokenizer.h"
+#include "Poco/String.h" // for cat
 
 using Poco::Net::HTTPClientSession;
 using Poco::Net::HTTPRequest;
@@ -23,6 +23,9 @@ using Poco::Net::NetException;
 using Poco::Net::SocketAddress;
 using Poco::StreamCopier;
 using Poco::WindowsConsoleChannel;
+using Poco::StringTokenizer;
+using Poco::cat;
+using Poco::UInt16;
 
 SIOClient::SIOClient(void)
 {
@@ -60,23 +63,19 @@ bool SIOClient::handshake()
 	if (res->getStatus() != Poco::Net::HTTPResponse::HTTP_UNAUTHORIZED)
 	{
 		std::string temp;
-		std::stringstream session;
 
 		StreamCopier::copyToString(*rs, temp);
 
 		_logger->information("response: %s\n",temp);
-		
-		for(std::string::size_type i = 0; i < temp.size(); ++i) {
-			
-			if(temp[i] == ':') break;
-			
-			session << temp[i];
 
-		}
+		StringTokenizer msg(temp, ":");
 
-		_logger->information("session: %s",session.str());
+		_logger->information("session: %s",msg[0]);
+		_logger->information("heartbeat: %s",msg[1]);
+		_logger->information("timeout: %s",msg[2]);
+		_logger->information("transports: %s",msg[3]);
 
-		_sid = session.str();
+		_sid = msg[0];
 
 		return true;
 	}
@@ -140,10 +139,7 @@ bool SIOClient::receive() {
 		case 2: 
 			break;
 	}
-
-
-
-
+	
 	std::stringstream s;
 	for(int i = 0; i < n; i++) {
 		s << buffer[i];
