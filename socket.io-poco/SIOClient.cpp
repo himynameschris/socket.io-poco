@@ -76,6 +76,8 @@ bool SIOClient::handshake()
 		_logger->information("transports: %s",msg[3]);
 
 		_sid = msg[0];
+		_heartbeat_timeout = atoi(msg[1].c_str());
+		_timeout = atoi(msg[2].c_str());
 
 		return true;
 	}

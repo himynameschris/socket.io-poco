@@ -13,6 +13,8 @@ class SIOClient
 {
 private:
 	std::string _sid;
+	int _heartbeat_timeout;
+	int _timeout;
 	std::string _host;
 	int _port;
 
