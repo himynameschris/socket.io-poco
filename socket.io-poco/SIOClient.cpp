@@ -36,7 +36,6 @@ SIOClient::SIOClient(int port, std::string host) :
 	_port(port),
 	_host(host)
 {
-	
 	init();
 
 }
@@ -91,32 +90,41 @@ bool SIOClient::init()
 	_logger = &(Logger::get("TestLogger"));
 	_logger->setChannel(new WindowsConsoleChannel());
 
-	handshake();
+	_connected = connect();
+
+	return _connected;
+
+}
+
+bool SIOClient::connect() {
+
+	if(handshake()) {
 	
-	UInt16 aport = _port;
-	HTTPClientSession *session = new HTTPClientSession(_host, aport);
+		UInt16 aport = _port;
+		HTTPClientSession *session = new HTTPClientSession(_host, aport);
 
-	HTTPRequest *req = new HTTPRequest(HTTPRequest::HTTP_GET,"/socket.io/1/websocket/"+_sid,HTTPMessage::HTTP_1_1);
+		HTTPRequest *req = new HTTPRequest(HTTPRequest::HTTP_GET,"/socket.io/1/websocket/"+_sid,HTTPMessage::HTTP_1_1);
 
-	HTTPResponse *res = new HTTPResponse();
+		HTTPResponse *res = new HTTPResponse();
 
-	pauser();
+		pauser();
 
-	try {
-		_ws = new WebSocket(*session, *req, *res);
+		try {
+			_ws = new WebSocket(*session, *req, *res);
+		}
+		catch(NetException ne) {
+			std::cout << ne.displayText() << " : " << ne.code() << " - " << ne.what() << "\n";
+			this->pauser();
+			return 0;
+		}
+
+		_logger->information("WebSocket Created\n");
+
+		return true;
+
 	}
-	catch(NetException ne) {
-		std::cout << ne.displayText() << " : " << ne.code() << " - " << ne.what() << "\n";
-		this->pauser();
-		return 0;
-	}
 
-	_logger->information("WebSocket Created\n");
-
-	this->pauser();
-
-	return true;
-
+	return false;
 }
  
 bool SIOClient::receive() {
@@ -151,6 +159,15 @@ bool SIOClient::receive() {
 
 	return true;
 
+}
+
+void SIOClient::monitor()
+{
+	do 
+	{
+		receive();
+
+	} while (_connected);
 }
 
 void SIOClient::pauser()

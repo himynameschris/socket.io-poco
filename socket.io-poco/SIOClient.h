@@ -17,6 +17,7 @@ private:
 	int _timeout;
 	std::string _host;
 	int _port;
+	bool _connected;
 
 	WebSocket *_ws;
 
@@ -30,6 +31,8 @@ public:
 
 	bool handshake();
 	bool init();
+	bool connect();
+	void monitor();
 	__declspec(dllexport) bool receive();
 	__declspec(dllexport) void pauser();
 };
