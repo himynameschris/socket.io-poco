@@ -167,23 +167,6 @@ bool SIOClient::receive() {
 	n = _ws->receiveFrame(buffer, sizeof(buffer), flags);
 	_logger->information("bytes received: %d\n",n);
 
-
-	int control = buffer[0];
-
-	switch(control) {
-		case 0: 
-			std::cout << "0";
-				
-			break;
-		case 1: 
-			break;
-		case 2: 
-
-			std::cout << "Heartbeat received";
-
-			break;
-	}
-	
 	std::stringstream s;
 	for(int i = 0; i < n; i++) {
 		s << buffer[i];
@@ -191,6 +174,40 @@ bool SIOClient::receive() {
 
 	_logger->information("Message received: \"%s\"\n",s.str());
 
+	int control = atoi(&buffer[0]);
+
+	switch(control) {
+		case 0: 
+			_logger->information("Socket Disconnected\n");
+			break;
+		case 1: 
+			_logger->information("Connected to endpoint\n");
+			break;
+		case 2: 
+			_logger->information("Heartbeat received\n");
+			break;
+		case 3:
+			_logger->information("Message received\n");
+			//send message through notification center
+			break;
+		case 4:
+			_logger->information("JSON Message Received\n");
+			//send message through notification center
+		case 5:
+			_logger->information("Event Dispatched\n");
+			//send message through notification center
+			break;
+		case 6:
+			_logger->information("Message Ack\n");
+			break;
+		case 7:
+			_logger->information("Error\n");
+			break;
+		case 8:
+			_logger->information("Noop\n");
+			break;
+	}
+	
 	return true;
 
 }
