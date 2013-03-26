@@ -14,6 +14,7 @@
 #include <limits>
 #include "Poco/StringTokenizer.h"
 #include "Poco/String.h" // for cat
+#include "Poco/Timer.h"
 
 using Poco::Net::HTTPClientSession;
 using Poco::Net::HTTPRequest;
@@ -26,6 +27,8 @@ using Poco::WindowsConsoleChannel;
 using Poco::StringTokenizer;
 using Poco::cat;
 using Poco::UInt16;
+using Poco::Timer;
+using Poco::TimerCallback;
 
 SIOClient::SIOClient(void)
 {
@@ -84,15 +87,13 @@ bool SIOClient::handshake()
 	return false;
 }
 
-
 bool SIOClient::init()
 {
 	_logger = &(Logger::get("TestLogger"));
 	_logger->setChannel(new WindowsConsoleChannel());
 
-	_connected = connect();
 
-	return _connected;
+	return true;
 
 }
 
@@ -120,11 +121,32 @@ bool SIOClient::connect() {
 
 		_logger->information("WebSocket Created\n");
 
-		return true;
+		_connected = true;
+
+		int hbInterval = this->_heartbeat_timeout*.75*1000;
+
+		_heartbeatTimer = new Timer(hbInterval, hbInterval);
+
+		TimerCallback<SIOClient> heartbeat(*this, &SIOClient::heartbeat);
+
+		_heartbeatTimer->start(heartbeat);
+
+		return _connected;
 
 	}
 
 	return false;
+}
+
+void SIOClient::heartbeat(Poco::Timer& timer) {
+	_logger->information("heartbeat called\n");
+
+	std::string s = "2::";
+
+	const void *buffer = s.c_str();
+
+	_ws->sendFrame(buffer, s.length());
+
 }
  
 bool SIOClient::receive() {
@@ -147,6 +169,9 @@ bool SIOClient::receive() {
 		case 1: 
 			break;
 		case 2: 
+
+			std::cout << "Heartbeat received";
+
 			break;
 	}
 	

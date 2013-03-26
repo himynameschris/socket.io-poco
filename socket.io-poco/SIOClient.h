@@ -5,11 +5,14 @@
 
 #include "Poco/Net/WebSocket.h"
 #include "Poco/Logger.h"
+#include "Poco/Timer.h"
 
 using Poco::Net::WebSocket;
 using Poco::Logger;
+using Poco::Timer;
+using Poco::TimerCallback;
 
-class SIOClient
+class SIOClient 
 {
 private:
 	std::string _sid;
@@ -21,8 +24,9 @@ private:
 
 	WebSocket *_ws;
 
-	Logger *_logger;
+	Timer *_heartbeatTimer;
 
+	Logger *_logger;
 
 public:
 	__declspec(dllexport) SIOClient(void);
@@ -31,8 +35,9 @@ public:
 
 	bool handshake();
 	bool init();
-	bool connect();
-	void monitor();
+	__declspec(dllexport) bool connect();
+	__declspec(dllexport) void monitor();
+	void heartbeat(Poco::Timer& timer);
 	__declspec(dllexport) bool receive();
 	__declspec(dllexport) void pauser();
 };
