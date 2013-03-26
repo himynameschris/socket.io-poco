@@ -48,6 +48,15 @@ SIOClient::~SIOClient(void)
 {
 }
 
+bool SIOClient::init()
+{
+	_logger = &(Logger::get("TestLogger"));
+	_logger->setChannel(new WindowsConsoleChannel());
+
+	return true;
+
+}
+
 bool SIOClient::handshake()
 {
 	UInt16 aport = _port;
@@ -87,15 +96,6 @@ bool SIOClient::handshake()
 	return false;
 }
 
-bool SIOClient::init()
-{
-	_logger = &(Logger::get("TestLogger"));
-	_logger->setChannel(new WindowsConsoleChannel());
-
-
-	return true;
-
-}
 
 bool SIOClient::connect() {
 
@@ -149,6 +149,15 @@ void SIOClient::heartbeat(Poco::Timer& timer) {
 
 }
  
+void SIOClient::monitor()
+{
+	do 
+	{
+		receive();
+
+	} while (_connected);
+}
+
 bool SIOClient::receive() {
 
 	char buffer[1024];
@@ -184,15 +193,6 @@ bool SIOClient::receive() {
 
 	return true;
 
-}
-
-void SIOClient::monitor()
-{
-	do 
-	{
-		receive();
-
-	} while (_connected);
 }
 
 void SIOClient::pauser()
