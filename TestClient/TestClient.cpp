@@ -5,6 +5,7 @@
 #include "SIOClient.h"
 #include "Poco/RunnableAdapter.h"
 #include "Poco/Thread.h"
+#include "SIONotificationHandler.h"
 
 #include <iostream>
 
@@ -14,7 +15,10 @@ Poco::Thread;
 
 int _tmain(int argc, char* argv[])
 {
-	SIOClient *sio = new SIOClient(3000, "localhost");
+	NotificationCenter *nc = new NotificationCenter;
+	SIONotificationHandler *sioHandler = new SIONotificationHandler(nc);
+	SIOClient *sio = new SIOClient(3000, "localhost", nc);
+	
 
 	sio->connect();
 

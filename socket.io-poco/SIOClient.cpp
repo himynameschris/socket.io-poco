@@ -15,6 +15,7 @@
 #include "Poco/StringTokenizer.h"
 #include "Poco/String.h" // for cat
 #include "Poco/Timer.h"
+#include "SIONotifications.h"
 
 using Poco::Net::HTTPClientSession;
 using Poco::Net::HTTPRequest;
@@ -35,9 +36,10 @@ SIOClient::SIOClient(void)
 	
 }
 
-SIOClient::SIOClient(int port, std::string host) :
+SIOClient::SIOClient(int port, std::string host, NotificationCenter* nc) :
 	_port(port),
-	_host(host)
+	_host(host),
+	_nCenter(nc)
 {
 	init();
 
@@ -165,14 +167,14 @@ bool SIOClient::receive() {
 	int n;
 
 	n = _ws->receiveFrame(buffer, sizeof(buffer), flags);
-	_logger->information("bytes received: %d\n",n);
+	_logger->information("bytes received: %d ",n);
 
 	std::stringstream s;
 	for(int i = 0; i < n; i++) {
 		s << buffer[i];
 	}
 
-	_logger->information("Message received: \"%s\"\n",s.str());
+	_logger->information("buffer received: \"%s\"\n",s.str());
 
 	int control = atoi(&buffer[0]);
 
@@ -188,14 +190,14 @@ bool SIOClient::receive() {
 			break;
 		case 3:
 			_logger->information("Message received\n");
-			//send message through notification center
+			_nCenter->postNotification(new SIOMessage);
 			break;
 		case 4:
 			_logger->information("JSON Message Received\n");
-			//send message through notification center
+			_nCenter->postNotification(new SIOJSONMessage);
 		case 5:
 			_logger->information("Event Dispatched\n");
-			//send message through notification center
+			_nCenter->postNotification(new SIOEvent);
 			break;
 		case 6:
 			_logger->information("Message Ack\n");
@@ -218,4 +220,9 @@ void SIOClient::pauser()
 	std::cin.get();
     
 	return;
+}
+
+NotificationCenter* SIOClient::getNCenter()
+{
+	return _nCenter;
 }

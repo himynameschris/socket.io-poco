@@ -2,15 +2,16 @@
 
 #include <string>
 
-
 #include "Poco/Net/WebSocket.h"
 #include "Poco/Logger.h"
 #include "Poco/Timer.h"
+#include "Poco/NotificationCenter.h"
 
 using Poco::Net::WebSocket;
 using Poco::Logger;
 using Poco::Timer;
 using Poco::TimerCallback;
+using Poco::NotificationCenter;
 
 class SIOClient 
 {
@@ -28,9 +29,11 @@ private:
 
 	Logger *_logger;
 
+	NotificationCenter* _nCenter;
+
 public:
 	__declspec(dllexport) SIOClient(void);
-	__declspec(dllexport) SIOClient(int port, std::string host);
+	__declspec(dllexport) SIOClient(int port, std::string host, NotificationCenter* nc);
 	~SIOClient(void);
 
 	bool handshake();
@@ -40,5 +43,6 @@ public:
 	void heartbeat(Poco::Timer& timer);
 	__declspec(dllexport) bool receive();
 	__declspec(dllexport) void pauser();
+	__declspec(dllexport) NotificationCenter* getNCenter();
 };
 
