@@ -177,6 +177,7 @@ bool SIOClient::receive() {
 	_logger->information("buffer received: \"%s\"\n",s.str());
 
 	int control = atoi(&buffer[0]);
+	StringTokenizer st(s.str(), ":");
 
 	switch(control) {
 		case 0: 
@@ -189,8 +190,10 @@ bool SIOClient::receive() {
 			_logger->information("Heartbeat received\n");
 			break;
 		case 3:
+			
+
 			_logger->information("Message received\n");
-			_nCenter->postNotification(new SIOMessage);
+			_nCenter->postNotification(new SIOMessage(st[3]));
 			break;
 		case 4:
 			_logger->information("JSON Message Received\n");

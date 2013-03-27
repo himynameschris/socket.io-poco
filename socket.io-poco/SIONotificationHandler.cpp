@@ -29,7 +29,7 @@ SIONotificationHandler::~SIONotificationHandler(void)
 
 void SIONotificationHandler::handleMessage(SIOMessage* pNf)
 {
-	std::cout << "handling message";
+	std::cout << "handling message, message received: " << pNf->getMsg() << "\n";
 	pNf->release();
 }
 
