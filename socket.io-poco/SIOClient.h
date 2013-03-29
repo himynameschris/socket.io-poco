@@ -6,14 +6,19 @@
 #include "Poco/Logger.h"
 #include "Poco/Timer.h"
 #include "Poco/NotificationCenter.h"
+#include "Poco/Thread.h"
+#include "Poco/ThreadTarget.h"
+#include "Poco/RunnableAdapter.h"
 
 using Poco::Net::WebSocket;
 using Poco::Logger;
 using Poco::Timer;
 using Poco::TimerCallback;
 using Poco::NotificationCenter;
+using Poco::Thread;
+using Poco::ThreadTarget;
 
-class SIOClient 
+class SIOClient: public Poco::Runnable
 {
 private:
 	std::string _sid;
@@ -29,6 +34,8 @@ private:
 
 	Logger *_logger;
 
+	Thread _thread;
+	
 	NotificationCenter* _nCenter;
 
 public:
@@ -40,6 +47,7 @@ public:
 	bool init();
 	__declspec(dllexport) bool connect();
 	__declspec(dllexport) void monitor();
+	__declspec(dllexport) virtual void run();
 	void heartbeat(Poco::Timer& timer);
 	__declspec(dllexport) bool receive();
 	__declspec(dllexport) void pauser();

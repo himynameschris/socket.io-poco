@@ -16,6 +16,7 @@
 #include "Poco/String.h" // for cat
 #include "Poco/Timer.h"
 #include "SIONotifications.h"
+#include "Poco/RunnableAdapter.h"
 
 using Poco::Net::HTTPClientSession;
 using Poco::Net::HTTPRequest;
@@ -52,7 +53,7 @@ SIOClient::~SIOClient(void)
 
 bool SIOClient::init()
 {
-	_logger = &(Logger::get("TestLogger"));
+	_logger = &(Logger::get("SIOClientLog"));
 	_logger->setChannel(new WindowsConsoleChannel());
 
 	return true;
@@ -133,6 +134,8 @@ bool SIOClient::connect() {
 
 		_heartbeatTimer->start(heartbeat);
 
+		_thread.start(*this);
+
 		return _connected;
 
 	}
@@ -148,6 +151,13 @@ void SIOClient::heartbeat(Poco::Timer& timer) {
 	const void *buffer = s.c_str();
 
 	_ws->sendFrame(buffer, s.length());
+
+}
+
+void SIOClient::run()
+{
+
+	monitor();
 
 }
  
