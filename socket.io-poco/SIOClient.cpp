@@ -13,7 +13,7 @@
 #include <sstream>
 #include <limits>
 #include "Poco/StringTokenizer.h"
-#include "Poco/String.h" // for cat
+#include "Poco/String.h"
 #include "Poco/Timer.h"
 #include "SIONotifications.h"
 #include "Poco/RunnableAdapter.h"
@@ -34,7 +34,9 @@ using Poco::TimerCallback;
 
 SIOClient::SIOClient(void)
 {
-	
+	_port = 0;
+	_host = "";
+	_nCenter = NULL;
 }
 
 SIOClient::SIOClient(int port, std::string host, NotificationCenter* nc) :
@@ -200,14 +202,13 @@ bool SIOClient::receive() {
 			_logger->information("Heartbeat received\n");
 			break;
 		case 3:
-			
-
 			_logger->information("Message received\n");
 			_nCenter->postNotification(new SIOMessage(st[3]));
 			break;
 		case 4:
 			_logger->information("JSON Message Received\n");
 			_nCenter->postNotification(new SIOJSONMessage);
+			break;
 		case 5:
 			_logger->information("Event Dispatched\n");
 			_nCenter->postNotification(new SIOEvent);
