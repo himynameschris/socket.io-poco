@@ -1,7 +1,10 @@
 #include "SIONotificationHandler.h"
 #include "Poco/Observer.h"
 #include "SIONotifications.h"
+#include "Poco/NotificationCenter.h"
+#include "Poco/WindowsConsoleChannel.h"
 
+using Poco::WindowsConsoleChannel;
 using Poco::Observer;
 
 SIONotificationHandler::SIONotificationHandler(void)
@@ -12,6 +15,9 @@ SIONotificationHandler::SIONotificationHandler(NotificationCenter* nc)
 {
 	_nCenter = nc;
 	registerCallbacks(_nCenter);
+
+	_logger = &(Logger::get("SIOClientLog"));
+	_logger->setChannel(new WindowsConsoleChannel());
 }
 
 SIONotificationHandler::~SIONotificationHandler(void)
@@ -29,19 +35,19 @@ SIONotificationHandler::~SIONotificationHandler(void)
 
 void SIONotificationHandler::handleMessage(SIOMessage* pNf)
 {
-	std::cout << "handling message, message received: " << pNf->getMsg() << "\n";
+	_logger->information("handling message, message received: %s",pNf->getMsg());
 	pNf->release();
 }
 
 void SIONotificationHandler::handleJSONMessage(SIOJSONMessage* pNf)
 {
-	std::cout << "handling JSON message";
+	_logger->information("handling JSON message");
 	pNf->release();
 }
 
 void SIONotificationHandler::handleEvent(SIOEvent* pNf)
 {
-	std::cout << "handling Event";
+	_logger->information("handling Event");
 	pNf->release();
 }
 
