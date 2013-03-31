@@ -15,8 +15,10 @@
 #include "Poco/StringTokenizer.h"
 #include "Poco/String.h"
 #include "Poco/Timer.h"
-#include "SIONotifications.h"
 #include "Poco/RunnableAdapter.h"
+
+#include "SIONotifications.h"
+#include "SIOEventCallback.h"
 
 using Poco::Net::HTTPClientSession;
 using Poco::Net::HTTPRequest;
@@ -32,7 +34,9 @@ using Poco::UInt16;
 using Poco::Timer;
 using Poco::TimerCallback;
 
-SIOClient::SIOClient(void)
+ON_EVENT(SIOClient, Update)
+
+SIOClient::SIOClient()
 {
 	_port = 0;
 	_host = "";
@@ -45,6 +49,8 @@ SIOClient::SIOClient(int port, std::string host, NotificationCenter* nc) :
 	_nCenter(nc)
 {
 	init();
+
+	
 
 }
 
@@ -207,7 +213,7 @@ bool SIOClient::receive() {
 			break;
 		case 4:
 			_logger->information("JSON Message Received\n");
-			_nCenter->postNotification(new SIOJSONMessage);
+			_nCenter->postNotification(new SIOJSONMessage(st[3]));
 			break;
 		case 5:
 			_logger->information("Event Dispatched\n");
@@ -240,3 +246,9 @@ NotificationCenter* SIOClient::getNCenter()
 {
 	return _nCenter;
 }
+
+void SIOClient::onUpdate(std::string *data)
+{
+
+}
+
