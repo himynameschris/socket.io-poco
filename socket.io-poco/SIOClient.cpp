@@ -217,7 +217,7 @@ bool SIOClient::receive() {
 			break;
 		case 5:
 			_logger->information("Event Dispatched\n");
-			_nCenter->postNotification(new SIOEvent);
+			_nCenter->postNotification(new SIOEvent(this, st[3]));
 			break;
 		case 6:
 			_logger->information("Message Ack\n");
