@@ -14,7 +14,11 @@ private:
 
 class SIOJSONMessage: public Notification
 {
-
+	public:
+	SIOJSONMessage(std::string msg) : _msg(msg) {}
+	std::string getMsg() const {return _msg;}
+private:
+	std::string _msg;
 };
 
 class SIOEvent: public Notification
