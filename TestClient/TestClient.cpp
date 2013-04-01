@@ -1,7 +1,4 @@
 // TestClient.cpp : Defines the entry point for the console application.
-//
-#include "StdAfx.h"
-
 #include "SIOClient.h"
 
 #include "Poco/WindowsConsoleChannel.h"
@@ -13,7 +10,7 @@
 using Poco::WindowsConsoleChannel;
 using Poco::Thread;
 
-int _tmain(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
 	Logger *logger = &(Logger::get("SIOClientLog"));
 	logger->setChannel(new WindowsConsoleChannel());
