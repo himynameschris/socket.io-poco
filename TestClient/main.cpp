@@ -1,4 +1,4 @@
-// TestClient.cpp : Defines the entry point for the console application.
+// main.cpp : Defines the entry point for the console application.
 #include "SIOClient.h"
 
 #include "Poco/WindowsConsoleChannel.h"
