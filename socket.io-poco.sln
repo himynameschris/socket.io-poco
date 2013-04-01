@@ -2,11 +2,15 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "socket.io-poco", "socket.io-poco\socket.io-poco.vcxproj", "{6D476F8D-A672-4C3A-BFC1-A20396736D85}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A63135B8-0DFC-428C-AF90-BC020BE83D0C} = {A63135B8-0DFC-428C-AF90-BC020BE83D0C}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestClient", "TestClient\TestClient.vcxproj", "{75086192-48D0-44B3-8DCF-6CAF00286551}"
 	ProjectSection(ProjectDependencies) = postProject
 		{8164D41D-B053-405B-826C-CF37AC0EF176} = {8164D41D-B053-405B-826C-CF37AC0EF176}
 		{6D476F8D-A672-4C3A-BFC1-A20396736D85} = {6D476F8D-A672-4C3A-BFC1-A20396736D85}
+		{A63135B8-0DFC-428C-AF90-BC020BE83D0C} = {A63135B8-0DFC-428C-AF90-BC020BE83D0C}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Net", "..\poco\Net\Net_vs100.vcxproj", "{B057A1FE-09F7-465E-B8B5-E1B659051D76}"
@@ -97,8 +101,8 @@ Global
 		{A63135B8-0DFC-428C-AF90-BC020BE83D0C}.debug_static_md|Win32.Build.0 = debug_static_md|Win32
 		{A63135B8-0DFC-428C-AF90-BC020BE83D0C}.debug_static_mt|Win32.ActiveCfg = debug_static_mt|Win32
 		{A63135B8-0DFC-428C-AF90-BC020BE83D0C}.debug_static_mt|Win32.Build.0 = debug_static_mt|Win32
-		{A63135B8-0DFC-428C-AF90-BC020BE83D0C}.Debug|Win32.ActiveCfg = debug_static_mt|Win32
-		{A63135B8-0DFC-428C-AF90-BC020BE83D0C}.Debug|Win32.Build.0 = debug_static_mt|Win32
+		{A63135B8-0DFC-428C-AF90-BC020BE83D0C}.Debug|Win32.ActiveCfg = debug_shared|Win32
+		{A63135B8-0DFC-428C-AF90-BC020BE83D0C}.Debug|Win32.Build.0 = debug_shared|Win32
 		{A63135B8-0DFC-428C-AF90-BC020BE83D0C}.release_shared|Win32.ActiveCfg = release_shared|Win32
 		{A63135B8-0DFC-428C-AF90-BC020BE83D0C}.release_shared|Win32.Build.0 = release_shared|Win32
 		{A63135B8-0DFC-428C-AF90-BC020BE83D0C}.release_static_md|Win32.ActiveCfg = release_static_md|Win32
