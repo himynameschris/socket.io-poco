@@ -33,6 +33,7 @@ using Poco::cat;
 using Poco::UInt16;
 using Poco::Timer;
 using Poco::TimerCallback;
+using Poco::Dynamic::Var;
 
 ON_EVENT(SIOClient, Update)
 
@@ -197,6 +198,10 @@ bool SIOClient::receive() {
 	int control = atoi(&buffer[0]);
 	StringTokenizer st(s.str(), ":");
 
+	std::string payload = "";
+	typedef std::vector<std::string> TokenVec;
+	typedef TokenVec::const_iterator Iterator;
+
 	switch(control) {
 		case 0: 
 			_logger->information("Socket Disconnected\n");
@@ -217,7 +222,14 @@ bool SIOClient::receive() {
 			break;
 		case 5:
 			_logger->information("Event Dispatched\n");
-			_nCenter->postNotification(new SIOEvent(this, st[3]));
+
+			for(int i = 3; i < st.count(); i++)
+			{
+				if(i != 3) payload += ":";
+				payload += st[i];
+			}
+
+			_nCenter->postNotification(new SIOEvent(this, payload));
 			break;
 		case 6:
 			_logger->information("Message Ack\n");
@@ -247,8 +259,9 @@ NotificationCenter* SIOClient::getNCenter()
 	return _nCenter;
 }
 
-void SIOClient::onUpdate(std::string *data)
+void SIOClient::onUpdate(Object::Ptr data)
 {
-
+	Var temp = data->get("name");
+	_logger->information("onUpdate data for arg name: %s", temp.convert<std::string>());
 }
 

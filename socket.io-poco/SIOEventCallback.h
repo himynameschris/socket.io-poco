@@ -3,6 +3,10 @@
 #include "SIOEventRegistry.h"
 #include "SIOClient.h"
 
+#include "Poco/JSON/Parser.h"
+
+using Poco::JSON::Object;
+
 /**
  * This class provides an interface to call event functions
  */
@@ -12,7 +16,7 @@ public:
     virtual ~SIOEventCallbackBase()
     {}
 
-    virtual void fire( SIOClient *client, std::string *data ) = 0;
+    virtual void fire( SIOClient *client, Object::Ptr data ) = 0;
 };
 
 /**
@@ -27,7 +31,7 @@ public:
      * Register a callback function to be called from collide()
      * @param ftp pointer to the method to call
      */
-    SIOEventCallback(void(T::*fpt)( std::string *data ))
+    SIOEventCallback(void(T::*fpt)( Object::Ptr data ))
     {
         mFpt=fpt;
     };
@@ -39,14 +43,14 @@ public:
      * @param otherObject parameter to pass to the callback function
      * @param c collision parameter to pass to the callback object
      */
-    virtual void fire(SIOClient *client, std::string *data)
+    virtual void fire(SIOClient *client, Object::Ptr data)
     {
         T* r = dynamic_cast<T*>(client);
         (*r.*mFpt)(data);
     };
 
 private:
-   void(T::*mFpt)(std::string *data);
+   void(T::*mFpt)(Object::Ptr  data);
 };
 
 /**

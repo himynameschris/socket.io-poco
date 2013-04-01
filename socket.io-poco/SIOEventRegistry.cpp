@@ -27,7 +27,7 @@ bool SIOEventRegistry::registerEvent(const char *name, SIOEventCallbackBase *cal
 	return true;
 }
 
-void SIOEventRegistry::fireEvent(SIOClient *client, const char *name, std::string *data)
+void SIOEventRegistry::fireEvent(SIOClient *client, const char *name, Object::Ptr data)
 {
     const char *clientName = client->nameForObject();
     char functionName[255];

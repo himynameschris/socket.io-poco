@@ -3,6 +3,10 @@
 #include "SIOClient.h"
 #include <map>
 
+#include "Poco/JSON/Parser.h"
+
+using Poco::JSON::Object;
+
 class SIOEventCallbackBase;
 
 class SIOEventRegistry
@@ -13,7 +17,7 @@ public:
 
 	static SIOEventRegistry *sharedInstance();
 	bool registerEvent(const char *name, SIOEventCallbackBase *callback);
-	void fireEvent(SIOClient *client, const char *name, std::string *data);
+	void fireEvent(SIOClient *client, const char *name, Object::Ptr data);
 
 private:
 

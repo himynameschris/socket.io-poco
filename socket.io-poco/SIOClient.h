@@ -10,6 +10,10 @@
 #include "Poco/ThreadTarget.h"
 #include "Poco/RunnableAdapter.h"
 
+#include "Poco/JSON/Parser.h"
+
+using Poco::JSON::Object;
+
 using Poco::Net::WebSocket;
 using Poco::Logger;
 using Poco::Timer;
@@ -38,9 +42,7 @@ private:
 
 	Thread _thread;
 	
-	NotificationCenter* _nCenter;
-
-	
+	NotificationCenter* _nCenter;	
 
 public:
 	__declspec(dllexport) SIOClient();
@@ -51,7 +53,7 @@ public:
 
 	bool handshake();
 	bool init();
-	void onUpdate(std::string *data);
+	void onUpdate(Object::Ptr data);
 	
 	__declspec(dllexport) bool connect();
 	__declspec(dllexport) void monitor();

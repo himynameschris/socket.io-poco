@@ -4,8 +4,18 @@
 #include "Poco/NotificationCenter.h"
 #include "Poco/WindowsConsoleChannel.h"
 
+#include "Poco/JSON/Parser.h"
+#include "Poco/JSON/DefaultHandler.h"
+
+#include "SIOEventRegistry.h"
+
 using Poco::WindowsConsoleChannel;
 using Poco::Observer;
+using Poco::JSON::Parser;
+using Poco::JSON::DefaultHandler;
+using Poco::Dynamic::Var;
+using Poco::JSON::Array;
+using Poco::JSON::Object;
 
 SIONotificationHandler::SIONotificationHandler(void)
 {
@@ -48,6 +58,25 @@ void SIONotificationHandler::handleJSONMessage(SIOJSONMessage* pNf)
 void SIONotificationHandler::handleEvent(SIOEvent* pNf)
 {
 	_logger->information("handling Event");
+	_logger->information("data: %s", pNf->_data);
+
+	Parser parser;
+	DefaultHandler handler;
+
+	parser.setHandler(&handler);
+	parser.parse(pNf->_data);
+
+	Var result = handler.result();
+	Object::Ptr object = result.extract<Object::Ptr>();
+	Var temp = object->get("name");
+
+	std::string eventName = temp.convert<std::string>();
+	
+	Array::Ptr arr = object->getArray("args");
+	Object::Ptr args = arr->getObject(0);
+
+	SIOEventRegistry::sharedInstance()->fireEvent(pNf->_client, eventName.c_str(), args);
+
 	pNf->release();
 }
 

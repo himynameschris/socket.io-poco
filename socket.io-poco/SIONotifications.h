@@ -1,5 +1,6 @@
 #pragma once
 #include "Poco/Notification.h"
+#include "SIOClient.h"
 
 using Poco::Notification;
 
@@ -25,7 +26,7 @@ class SIOEvent: public Notification
 {
 public:
 	SIOEvent(SIOClient *client, std::string data) : _client(client), _data(data) {}
-private:
+
 	SIOClient *_client;
-	std::string _data;
+	std::string _name, _data;
 };
