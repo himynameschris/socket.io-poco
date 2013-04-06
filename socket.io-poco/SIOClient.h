@@ -22,7 +22,6 @@ using Poco::NotificationCenter;
 using Poco::Thread;
 using Poco::ThreadTarget;
 
-#define EVENT_RECEIVER(A) const char *nameForObject() const {return #A;}
 
 class SIOClient: public Poco::Runnable
 {
@@ -47,9 +46,7 @@ private:
 public:
 	__declspec(dllexport) SIOClient();
 	__declspec(dllexport) SIOClient(int port, std::string host, NotificationCenter* nc);
-	~SIOClient(void);
-
-	EVENT_RECEIVER(SIOClient)
+	__declspec(dllexport) ~SIOClient(void);
 
 	bool handshake();
 	bool init();
@@ -63,3 +60,4 @@ public:
 	__declspec(dllexport) void pauser();
 	__declspec(dllexport) NotificationCenter* getNCenter();
 };
+

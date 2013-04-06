@@ -1,11 +1,16 @@
 #pragma once
 //#include "SIOEventCallback.h"
 #include "SIOClient.h"
+#include "SIOEventTarget.h"
 #include <map>
 
 #include "Poco/JSON/Parser.h"
+#include "Poco/BasicEvent.h"
+#include "Poco/Delegate.h"
 
 using Poco::JSON::Object;
+using Poco::BasicEvent;
+using Poco::Delegate;
 
 class SIOEventCallbackBase;
 
@@ -15,13 +20,13 @@ public:
 	SIOEventRegistry(void);
 	~SIOEventRegistry(void);
 
-	static SIOEventRegistry *sharedInstance();
-	bool registerEvent(const char *name, SIOEventCallbackBase *callback);
+	__declspec(dllexport) static SIOEventRegistry *sharedInstance();
+	__declspec(dllexport) bool registerEvent(const char *name, SIOEventTarget *target, callback c);
 	void fireEvent(SIOClient *client, const char *name, Object::Ptr data);
 
 private:
 
-	std::map<std::string, SIOEventCallbackBase *> mEventMap; //!< the map containing event names and handlers
+	std::map<std::string, BasicEvent< Object::Ptr > *> mEventMap; //!< the map containing event names and handlers
 };
 
 static SIOEventRegistry *sioEventRegistryInstance = NULL;

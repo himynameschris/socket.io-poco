@@ -35,7 +35,7 @@ using Poco::Timer;
 using Poco::TimerCallback;
 using Poco::Dynamic::Var;
 
-ON_EVENT(SIOClient, Update)
+//ON_EVENT(SIOClient, Update)
 
 SIOClient::SIOClient()
 {
@@ -50,9 +50,6 @@ SIOClient::SIOClient(int port, std::string host, NotificationCenter* nc) :
 	_nCenter(nc)
 {
 	init();
-
-	
-
 }
 
 
@@ -119,8 +116,6 @@ bool SIOClient::connect() {
 		HTTPRequest *req = new HTTPRequest(HTTPRequest::HTTP_GET,"/socket.io/1/websocket/"+_sid,HTTPMessage::HTTP_1_1);
 
 		HTTPResponse *res = new HTTPResponse();
-
-		pauser();
 
 		try {
 			_ws = new WebSocket(*session, *req, *res);

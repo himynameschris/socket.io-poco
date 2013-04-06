@@ -58,6 +58,6 @@ private:
  * @param A class to call the method on
  * @param B class which A collides with
  */
-#define ON_EVENT(A,B) static bool sioOn_##A##_##B##_registered = SIOEventRegistry::sharedInstance()->registerEvent(#A"::on"#B,new SIOEventCallback<A>(&A::on##B));
+#define ON_EVENT(A,B) static bool sioOn_##A##_##B##_registered = SIOEventRegistry::sharedInstance()->registerEvent("on"#B,new SIOEventCallback<A>(&A::on##B));
 
 
