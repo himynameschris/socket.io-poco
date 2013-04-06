@@ -45,7 +45,7 @@ private:
 
 public:
 	__declspec(dllexport) SIOClient();
-	__declspec(dllexport) SIOClient(int port, std::string host, NotificationCenter* nc);
+	__declspec(dllexport) SIOClient(int port, std::string host);
 	__declspec(dllexport) ~SIOClient(void);
 
 	bool handshake();

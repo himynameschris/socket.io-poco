@@ -5,8 +5,8 @@
 
 using Poco::Delegate;
 
-TestClient::TestClient(int port, std::string host, NotificationCenter* nc)
-	: SIOClient(port, host, nc)
+TestClient::TestClient(int port, std::string host)
+	: SIOClient(port, host)
 {
 	//ON_EVENT(SIOTestClient, Update)
 
@@ -18,10 +18,8 @@ TestClient::TestClient(int port, std::string host, NotificationCenter* nc)
 
 void TestClient::onUpdate(const void* pSender, Object::Ptr& arg)
 {
-	//Logger *logger = &(Logger::get("SIOClientLog"));
-	//logger->setChannel(new WindowsConsoleChannel());
+	Logger *logger = &(Logger::get("SIOClientLog"));
 
-	//logger->information("onUpdate!");
+	logger->information("onUpdate!");
 
-	std::cout << "onUpdate!";
 }

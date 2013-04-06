@@ -15,9 +15,7 @@ int main(int argc, char* argv[])
 	Logger *logger = &(Logger::get("SIOClientLog"));
 	logger->setChannel(new WindowsConsoleChannel());
 
-	NotificationCenter *nc = new NotificationCenter;
-	SIONotificationHandler *sioHandler = new SIONotificationHandler(nc);
-	TestClient *sio = new TestClient(3000, "localhost", nc);
+	TestClient *sio = new TestClient(3000, "localhost");
 	
 	sio->connect();
 		

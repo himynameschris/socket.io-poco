@@ -12,7 +12,7 @@ class TestClient :
 	public SIOClient, SIOEventTarget
 {
 public:
-	TestClient(int port, std::string host, NotificationCenter* nc);
+	TestClient(int port, std::string host);
 	~TestClient() {};
 
 	BasicEvent<std::string> Update;

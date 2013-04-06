@@ -19,6 +19,7 @@
 
 #include "SIONotifications.h"
 #include "SIOEventCallback.h"
+#include "SIONotificationHandler.h"
 
 using Poco::Net::HTTPClientSession;
 using Poco::Net::HTTPRequest;
@@ -44,11 +45,12 @@ SIOClient::SIOClient()
 	_nCenter = NULL;
 }
 
-SIOClient::SIOClient(int port, std::string host, NotificationCenter* nc) :
+SIOClient::SIOClient(int port, std::string host) :
 	_port(port),
-	_host(host),
-	_nCenter(nc)
+	_host(host)
 {
+	_nCenter = new NotificationCenter;
+	SIONotificationHandler *sioHandler = new SIONotificationHandler(_nCenter);
 	init();
 }
 
