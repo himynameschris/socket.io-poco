@@ -11,6 +11,8 @@ using Poco::JSON::Object;
 using Poco::BasicEvent;
 using Poco::Delegate;
 
+typedef void (SIOEventTarget::*callback)(const void*, Object::Ptr&);
+
 class SIOEventRegistry
 {
 public:

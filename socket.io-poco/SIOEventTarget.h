@@ -1,16 +1,18 @@
 #pragma once
 
+#include "Poco/JSON/Object.h"
+
+using Poco::JSON::Object;
+
 class SIOEventTarget
 {
 private:
 	
 public:
 	virtual ~SIOEventTarget() {};
+	
+	typedef void (SIOEventTarget::*callback)(const void*, Object::Ptr&);
 
-	//virtual const char *nameForObject() const = 0;
+	__declspec(dllexport) void on(const char *name, callback c);
 	
 };
-
-typedef void (SIOEventTarget::*callback)(const void*, Object::Ptr&);
-
-#define EVENT_TARGET(A) const char *nameForObject() const {return #A;}

@@ -8,11 +8,7 @@ using Poco::Delegate;
 TestClient::TestClient(int port, std::string host)
 	: SIOClient(port, host)
 {
-	//ON_EVENT(SIOTestClient, Update)
-
-	//event_callback callback = (event_callback)&SIOTestClient::onUpdate;
-
-	SIOEventRegistry::sharedInstance()->registerEvent("onUpdate", this, callback(&TestClient::onUpdate));
+	this->on("onUpdate", callback(&TestClient::onUpdate));
 }
 
 

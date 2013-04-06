@@ -96,6 +96,7 @@
     </ClCompile>
     <ClCompile Include="SIOClient.cpp" />
     <ClCompile Include="SIOEventRegistry.cpp" />
+    <ClCompile Include="SIOEventTarget.cpp" />
     <ClCompile Include="SIONotificationHandler.cpp" />
     <ClCompile Include="socket.io-poco.cpp" />
   </ItemGroup>
