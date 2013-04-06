@@ -47,10 +47,7 @@ bool SIOEventRegistry::registerEvent(const char *name, SIOEventTarget *target, c
 void SIOEventRegistry::fireEvent(SIOClient *client, const char *name, Object::Ptr data)
 {
 
-	char eventName[255];
-	sprintf(eventName, "on%s", name);
-
-	std::map<std::string,BasicEvent<Object::Ptr> *>::iterator it= mEventMap.find(std::string(eventName));
+	std::map<std::string,BasicEvent<Object::Ptr> *>::iterator it= mEventMap.find(std::string(name));
 	if(it != mEventMap.end())
     {
 		

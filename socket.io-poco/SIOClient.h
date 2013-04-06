@@ -34,13 +34,9 @@ private:
 	bool _connected;
 
 	WebSocket *_ws;
-
 	Timer *_heartbeatTimer;
-
 	Logger *_logger;
-
 	Thread _thread;
-	
 	NotificationCenter* _nCenter;	
 
 public:
@@ -50,6 +46,7 @@ public:
 
 	bool handshake();
 	bool init();
+	
 	
 	__declspec(dllexport) bool connect();
 	__declspec(dllexport) void monitor();

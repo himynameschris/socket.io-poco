@@ -8,9 +8,8 @@ using Poco::Delegate;
 TestClient::TestClient(int port, std::string host)
 	: SIOClient(port, host)
 {
-	this->on("onUpdate", callback(&TestClient::onUpdate));
+	this->on("Update", callback(&TestClient::onUpdate));
 }
-
 
 void TestClient::onUpdate(const void* pSender, Object::Ptr& arg)
 {
