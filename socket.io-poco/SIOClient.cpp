@@ -153,9 +153,7 @@ void SIOClient::heartbeat(Poco::Timer& timer) {
 
 	std::string s = "2::";
 
-	const void *buffer = s.c_str();
-
-	_ws->sendFrame(buffer, s.length());
+	_ws->sendFrame((const void*)(s.c_str()), s.length());
 
 }
 
@@ -173,6 +171,17 @@ void SIOClient::monitor()
 		receive();
 
 	} while (_connected);
+}
+
+void SIOClient::send(std::string s) {
+	_logger->information("sending message\n");
+
+	std::stringstream pre;
+	
+	pre << "3:::" << s;
+
+	_ws->sendFrame((const void*)(pre.str().c_str()), pre.str().length());
+
 }
 
 bool SIOClient::receive() {
