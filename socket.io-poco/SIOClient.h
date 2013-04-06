@@ -50,7 +50,6 @@ public:
 
 	bool handshake();
 	bool init();
-	void onUpdate(Object::Ptr data);
 	
 	__declspec(dllexport) bool connect();
 	__declspec(dllexport) void monitor();

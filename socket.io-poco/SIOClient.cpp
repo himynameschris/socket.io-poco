@@ -254,10 +254,3 @@ NotificationCenter* SIOClient::getNCenter()
 {
 	return _nCenter;
 }
-
-void SIOClient::onUpdate(Object::Ptr data)
-{
-	Var temp = data->get("name");
-	_logger->information("onUpdate data for arg name: %s", temp.convert<std::string>());
-}
-

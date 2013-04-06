@@ -15,8 +15,6 @@ public:
 	TestClient(int port, std::string host);
 	~TestClient() {};
 
-	BasicEvent<std::string> Update;
-
 	void onUpdate(const void* pSender, Object::Ptr& arg);
 
 };
