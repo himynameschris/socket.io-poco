@@ -23,6 +23,10 @@ int main(int argc, char* argv[])
 
 	sio->send("Hello Socket.IO");
 
+	logger->information("emitting test event");
+
+	sio->emit("testevent", "[{\"name\":\"myname\",\"type\":\"mytype\"}]");
+
 	logger->information("entering loop");
 	
 	do{

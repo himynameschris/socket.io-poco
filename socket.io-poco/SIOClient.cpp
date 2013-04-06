@@ -184,6 +184,19 @@ void SIOClient::send(std::string s) {
 
 }
 
+void SIOClient::emit(std::string eventname, std::string args) {
+	_logger->information("emitting event\n");
+
+	std::stringstream pre;
+	
+	pre << "5:::{\"name\":\"" << eventname << "\",\"args\":" << args << "}";
+
+	_logger->information("event data: %s\n", pre.str());
+
+	_ws->sendFrame((const void*)(pre.str().c_str()), pre.str().length());
+
+}
+
 bool SIOClient::receive() {
 
 	char buffer[1024];

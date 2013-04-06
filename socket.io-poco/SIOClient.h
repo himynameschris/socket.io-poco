@@ -54,6 +54,7 @@ public:
 	void heartbeat(Poco::Timer& timer);
 	__declspec(dllexport) bool receive();
 	__declspec(dllexport) void send(std::string s);
+	__declspec(dllexport) void emit(std::string eventname, std::string args);
 	__declspec(dllexport) void pauser();
 	__declspec(dllexport) NotificationCenter* getNCenter();
 };
