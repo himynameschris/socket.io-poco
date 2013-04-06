@@ -19,7 +19,11 @@ int main(int argc, char* argv[])
 	
 	sio->connect();
 		
-	logger->information("sio setup complete, entering loop");
+	logger->information("sio setup complete, sending message");
+
+	sio->send("Hello Socket.IO");
+
+	logger->information("entering loop");
 	
 	do{
 
