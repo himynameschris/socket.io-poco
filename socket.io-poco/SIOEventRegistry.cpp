@@ -1,7 +1,6 @@
 #pragma once
 
 #include "SIOEventRegistry.h"
-#include "SIOEventCallback.h"
 
 SIOEventRegistry::SIOEventRegistry(void)
 {

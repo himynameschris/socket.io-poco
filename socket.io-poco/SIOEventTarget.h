@@ -1,7 +1,5 @@
 #pragma once
 
-//#include "SIOEventCallback.h"
-
 class SIOEventTarget
 {
 private:

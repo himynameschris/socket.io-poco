@@ -18,7 +18,6 @@
 #include "Poco/RunnableAdapter.h"
 
 #include "SIONotifications.h"
-#include "SIOEventCallback.h"
 #include "SIONotificationHandler.h"
 
 using Poco::Net::HTTPClientSession;

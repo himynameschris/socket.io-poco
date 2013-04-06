@@ -1,5 +1,4 @@
 #pragma once
-//#include "SIOEventCallback.h"
 #include "SIOClient.h"
 #include "SIOEventTarget.h"
 #include <map>
@@ -11,8 +10,6 @@
 using Poco::JSON::Object;
 using Poco::BasicEvent;
 using Poco::Delegate;
-
-class SIOEventCallbackBase;
 
 class SIOEventRegistry
 {
