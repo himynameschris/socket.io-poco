@@ -80,6 +80,7 @@
     <ClInclude Include="SIOClient.h" />
     <ClInclude Include="SIOEventCallback.h" />
     <ClInclude Include="SIOEventRegistry.h" />
+    <ClInclude Include="SIOEventTarget.h" />
     <ClInclude Include="SIONotificationHandler.h" />
     <ClInclude Include="SIONotifications.h" />
     <ClInclude Include="targetver.h" />

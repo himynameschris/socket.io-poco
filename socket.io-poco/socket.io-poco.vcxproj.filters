@@ -36,6 +36,9 @@
     <ClInclude Include="SIOEventRegistry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SIOEventTarget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="socket.io-poco.cpp">
