@@ -35,8 +35,6 @@ using Poco::Timer;
 using Poco::TimerCallback;
 using Poco::Dynamic::Var;
 
-//ON_EVENT(SIOClient, Update)
-
 SIOClient::SIOClient()
 {
 	_port = 0;
@@ -217,15 +215,13 @@ bool SIOClient::receive() {
 	StringTokenizer st(s.str(), ":");
 
 	std::string payload = "";
-	typedef std::vector<std::string> TokenVec;
-	typedef TokenVec::const_iterator Iterator;
 
 	switch(control) {
 		case 0: 
 			_logger->information("Socket Disconnected\n");
 			break;
 		case 1: 
-			_logger->information("Connected to endpoint\n");
+			_logger->information("Connected to endpoint: %s \n", st[2]);
 			break;
 		case 2: 
 			_logger->information("Heartbeat received\n");
