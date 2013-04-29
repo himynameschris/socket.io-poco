@@ -5,14 +5,14 @@
 #include "Poco/WindowsConsoleChannel.h"
 
 #include "Poco/JSON/Parser.h"
-#include "Poco/JSON/DefaultHandler.h"
+#include "Poco/JSON/ParseHandler.h"
 
 #include "SIOEventRegistry.h"
 
 using Poco::WindowsConsoleChannel;
 using Poco::Observer;
 using Poco::JSON::Parser;
-using Poco::JSON::DefaultHandler;
+using Poco::JSON::ParseHandler;
 using Poco::Dynamic::Var;
 using Poco::JSON::Array;
 using Poco::JSON::Object;
@@ -60,13 +60,10 @@ void SIONotificationHandler::handleEvent(SIOEvent* pNf)
 	_logger->information("handling Event");
 	_logger->information("data: %s", pNf->_data);
 
-	Parser parser;
-	DefaultHandler handler;
-
-	parser.setHandler(&handler);
-	parser.parse(pNf->_data);
-
-	Var result = handler.result();
+	ParseHandler::Ptr pHandler = new ParseHandler(true);
+	Parser parser(pHandler);
+	
+	Var result = parser.parse(pNf->_data);
 	Object::Ptr object = result.extract<Object::Ptr>();
 	Var temp = object->get("name");
 
