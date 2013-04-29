@@ -40,22 +40,22 @@ private:
 	NotificationCenter* _nCenter;	
 
 public:
-	__declspec(dllexport) SIOClient();
-	__declspec(dllexport) SIOClient(int port, std::string host);
-	__declspec(dllexport) ~SIOClient(void);
+	SIOClient();
+	SIOClient(int port, std::string host);
+	~SIOClient(void);
 
 	bool handshake();
 	bool init();
 	
 	
-	__declspec(dllexport) bool connect();
-	__declspec(dllexport) void monitor();
-	__declspec(dllexport) virtual void run();
+	bool connect();
+	void monitor();
+	virtual void run();
 	void heartbeat(Poco::Timer& timer);
-	__declspec(dllexport) bool receive();
-	__declspec(dllexport) void send(std::string s);
-	__declspec(dllexport) void emit(std::string eventname, std::string args);
-	__declspec(dllexport) void pauser();
-	__declspec(dllexport) NotificationCenter* getNCenter();
+	bool receive();
+	void send(std::string s);
+	void emit(std::string eventname, std::string args);
+	void pauser();
+	NotificationCenter* getNCenter();
 };
 

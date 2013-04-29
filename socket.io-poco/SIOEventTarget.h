@@ -13,6 +13,6 @@ public:
 	
 	typedef void (SIOEventTarget::*callback)(const void*, Object::Ptr&);
 
-	__declspec(dllexport) void on(const char *name, callback c);
+	void on(const char *name, callback c);
 	
 };

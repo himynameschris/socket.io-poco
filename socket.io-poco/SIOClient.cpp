@@ -8,7 +8,7 @@
 #include "Poco/Net/SocketAddress.h"
 #include "Poco/StreamCopier.h"
 #include "Poco/Format.h"
-#include "Poco/WindowsConsoleChannel.h"
+//#include "Poco/WindowsConsoleChannel.h"
 #include <iostream>
 #include <sstream>
 #include <limits>
@@ -27,7 +27,7 @@ using Poco::Net::HTTPMessage;
 using Poco::Net::NetException;
 using Poco::Net::SocketAddress;
 using Poco::StreamCopier;
-using Poco::WindowsConsoleChannel;
+//using Poco::WindowsConsoleChannel;
 using Poco::StringTokenizer;
 using Poco::cat;
 using Poco::UInt16;
@@ -59,7 +59,7 @@ SIOClient::~SIOClient(void)
 bool SIOClient::init()
 {
 	_logger = &(Logger::get("SIOClientLog"));
-	_logger->setChannel(new WindowsConsoleChannel());
+	//_logger->setChannel(new WindowsConsoleChannel());
 
 	return true;
 

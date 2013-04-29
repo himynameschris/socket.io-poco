@@ -2,14 +2,14 @@
 #include "Poco/Observer.h"
 #include "SIONotifications.h"
 #include "Poco/NotificationCenter.h"
-#include "Poco/WindowsConsoleChannel.h"
+//#include "Poco/WindowsConsoleChannel.h"
 
 #include "Poco/JSON/Parser.h"
 #include "Poco/JSON/ParseHandler.h"
 
 #include "SIOEventRegistry.h"
 
-using Poco::WindowsConsoleChannel;
+//using Poco::WindowsConsoleChannel;
 using Poco::Observer;
 using Poco::JSON::Parser;
 using Poco::JSON::ParseHandler;
@@ -27,7 +27,7 @@ SIONotificationHandler::SIONotificationHandler(NotificationCenter* nc)
 	registerCallbacks(_nCenter);
 
 	_logger = &(Logger::get("SIOClientLog"));
-	_logger->setChannel(new WindowsConsoleChannel());
+	//_logger->setChannel(new WindowsConsoleChannel());
 }
 
 SIONotificationHandler::~SIONotificationHandler(void)

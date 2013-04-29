@@ -19,8 +19,8 @@ public:
 	SIOEventRegistry(void);
 	~SIOEventRegistry(void);
 
-	__declspec(dllexport) static SIOEventRegistry *sharedInstance();
-	__declspec(dllexport) bool registerEvent(const char *name, SIOEventTarget *target, callback c);
+	static SIOEventRegistry *sharedInstance();
+	bool registerEvent(const char *name, SIOEventTarget *target, callback c);
 	void fireEvent(SIOClient *client, const char *name, Object::Ptr data);
 
 private:

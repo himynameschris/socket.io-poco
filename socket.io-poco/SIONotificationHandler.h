@@ -10,7 +10,7 @@ class SIONotificationHandler
 {
 public:
 	SIONotificationHandler(void);
-	__declspec(dllexport) SIONotificationHandler(NotificationCenter* nc);
+	SIONotificationHandler(NotificationCenter* nc);
 	~SIONotificationHandler(void);
 
 	void handleMessage(SIOMessage* pNf);
