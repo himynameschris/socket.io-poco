@@ -1,5 +1,5 @@
 # **Socket.IO - Poco** #
-*A C++ Socket.IO Client the libraries at [pocoproject.org](http://pocoproject.org/)*
+*A C++ Socket.IO Client using the libraries at [pocoproject.org](http://pocoproject.org/)*
 
 ## **#info** ##
 
@@ -59,7 +59,7 @@ sio->connect();`
 
 **To use events and messaging:**
 
-Create your own subclass of SIOEventCallback
+Create your own subclass of SIOEventTarget
 
 Create methods to handle the callbacks, an event callback function signature must match this pattern:
 
