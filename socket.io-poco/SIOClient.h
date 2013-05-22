@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include "Poco/Net/HTTPClientSession.h"
 #include "Poco/Net/WebSocket.h"
 #include "Poco/Logger.h"
 #include "Poco/Timer.h"
@@ -14,6 +15,7 @@
 
 using Poco::JSON::Object;
 
+using Poco::Net::HTTPClientSession;
 using Poco::Net::WebSocket;
 using Poco::Logger;
 using Poco::Timer;
@@ -33,6 +35,7 @@ private:
 	int _port;
 	bool _connected;
 
+	HTTPClientSession *_session;
 	WebSocket *_ws;
 	Timer *_heartbeatTimer;
 	Logger *_logger;

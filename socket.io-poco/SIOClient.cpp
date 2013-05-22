@@ -1,14 +1,13 @@
 #include "SIOClient.h"
 
-#include "Poco/Net/HTTPClientSession.h"
 #include "Poco/Net/HTTPRequest.h"
 #include "Poco/Net/HTTPResponse.h"
 #include "Poco/Net/HTTPMessage.h"
+#include "Poco/Net/WebSocket.h"
 #include "Poco/Net/NetException.h"
 #include "Poco/Net/SocketAddress.h"
 #include "Poco/StreamCopier.h"
 #include "Poco/Format.h"
-//#include "Poco/WindowsConsoleChannel.h"
 #include <iostream>
 #include <sstream>
 #include <limits>
@@ -27,13 +26,13 @@ using Poco::Net::HTTPMessage;
 using Poco::Net::NetException;
 using Poco::Net::SocketAddress;
 using Poco::StreamCopier;
-//using Poco::WindowsConsoleChannel;
 using Poco::StringTokenizer;
 using Poco::cat;
 using Poco::UInt16;
 using Poco::Timer;
 using Poco::TimerCallback;
 using Poco::Dynamic::Var;
+using Poco::Net::WebSocket;
 
 SIOClient::SIOClient()
 {
@@ -54,12 +53,16 @@ SIOClient::SIOClient(int port, std::string host) :
 
 SIOClient::~SIOClient(void)
 {
+	delete(_heartbeatTimer);
+	delete(_ws);
+	delete(_session);
+	delete(_nCenter);
+
 }
 
 bool SIOClient::init()
 {
 	_logger = &(Logger::get("SIOClientLog"));
-	//_logger->setChannel(new WindowsConsoleChannel());
 
 	return true;
 
@@ -68,22 +71,22 @@ bool SIOClient::init()
 bool SIOClient::handshake()
 {
 	UInt16 aport = _port;
-	HTTPClientSession *session = new HTTPClientSession(_host, aport);
+	_session = new HTTPClientSession(_host, aport);
 
-	HTTPRequest *req = new HTTPRequest(HTTPRequest::HTTP_POST,"/socket.io/1",HTTPMessage::HTTP_1_1);
+	HTTPRequest req(HTTPRequest::HTTP_POST,"/socket.io/1",HTTPMessage::HTTP_1_1);
 
-	HTTPResponse *res = new HTTPResponse();
+	HTTPResponse res;
 
-	session->sendRequest(*req);
-	std::istream *rs = &session->receiveResponse(*res);
+	_session->sendRequest(req);
+	std::istream& rs = _session->receiveResponse(res);
 
-	std::cout << res->getStatus() << " " << res->getReason() << std::endl;
+	std::cout << res.getStatus() << " " << res.getReason() << std::endl;
 
-	if (res->getStatus() != Poco::Net::HTTPResponse::HTTP_UNAUTHORIZED)
+	if (res.getStatus() != Poco::Net::HTTPResponse::HTTP_UNAUTHORIZED)
 	{
 		std::string temp;
 
-		StreamCopier::copyToString(*rs, temp);
+		StreamCopier::copyToString(rs, temp);
 
 		_logger->information("response: %s\n",temp);
 
@@ -110,14 +113,15 @@ bool SIOClient::connect() {
 	if(handshake()) {
 	
 		UInt16 aport = _port;
-		HTTPClientSession *session = new HTTPClientSession(_host, aport);
+		
+		HTTPRequest req(HTTPRequest::HTTP_GET,"/socket.io/1/websocket/"+_sid,HTTPMessage::HTTP_1_1);
 
-		HTTPRequest *req = new HTTPRequest(HTTPRequest::HTTP_GET,"/socket.io/1/websocket/"+_sid,HTTPMessage::HTTP_1_1);
-
-		HTTPResponse *res = new HTTPResponse();
+		HTTPResponse res;
 
 		try {
-			_ws = new WebSocket(*session, *req, *res);
+		
+			_ws = new WebSocket(*_session, req, res);
+			
 		}
 		catch(NetException ne) {
 			std::cout << ne.displayText() << " : " << ne.code() << " - " << ne.what() << "\n";
