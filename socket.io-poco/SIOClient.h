@@ -58,7 +58,6 @@ public:
 	bool receive();
 	void send(std::string s);
 	void emit(std::string eventname, std::string args);
-	void pauser();
 	NotificationCenter* getNCenter();
 };
 

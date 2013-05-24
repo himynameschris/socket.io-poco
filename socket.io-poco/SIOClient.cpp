@@ -36,9 +36,7 @@ using Poco::Net::WebSocket;
 
 SIOClient::SIOClient()
 {
-	_port = 0;
-	_host = "";
-	_nCenter = NULL;
+	SIOClient(3000, "localhost");
 }
 
 SIOClient::SIOClient(int port, std::string host) :
@@ -125,7 +123,6 @@ bool SIOClient::connect() {
 		}
 		catch(NetException ne) {
 			std::cout << ne.displayText() << " : " << ne.code() << " - " << ne.what() << "\n";
-			this->pauser();
 			return 0;
 		}
 
@@ -262,14 +259,6 @@ bool SIOClient::receive() {
 	
 	return true;
 
-}
-
-void SIOClient::pauser()
-{
-    _logger->information("\nPress <ENTER> to continue . . .\n");
-	std::cin.get();
-    
-	return;
 }
 
 NotificationCenter* SIOClient::getNCenter()
