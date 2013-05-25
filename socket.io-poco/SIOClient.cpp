@@ -43,6 +43,7 @@ SIOClient::SIOClient(int port, std::string host) :
 	_port(port),
 	_host(host)
 {
+	_ws = NULL;
 	_nCenter = new NotificationCenter;
 	SIONotificationHandler *sioHandler = new SIONotificationHandler(_nCenter);
 	init();
@@ -116,15 +117,28 @@ bool SIOClient::connect() {
 
 		HTTPResponse res;
 
-		try {
+		do {
+
+			try {
 		
-			_ws = new WebSocket(*_session, req, res);
+				_ws = new WebSocket(*_session, req, res);
 			
-		}
-		catch(NetException ne) {
-			std::cout << ne.displayText() << " : " << ne.code() << " - " << ne.what() << "\n";
-			return 0;
-		}
+			}
+			catch(NetException ne) {
+				std::cout << ne.displayText() << " : " << ne.code() << " - " << ne.what() << "\n";
+
+				if(_ws) {
+
+					delete _ws;
+					_ws = NULL;
+
+				}
+
+				Poco::Thread::sleep(2000);
+
+			}
+		
+		} while(_ws == NULL);
 
 		_logger->information("WebSocket Created\n");
 
