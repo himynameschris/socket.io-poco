@@ -28,6 +28,9 @@ using Poco::ThreadTarget;
 class SIOClient: public Poco::Runnable
 {
 private:
+	SIOClient();
+	SIOClient(int port, std::string host);
+	
 	std::string _sid;
 	int _heartbeat_timeout;
 	int _timeout;
@@ -43,15 +46,14 @@ private:
 	NotificationCenter* _nCenter;	
 
 public:
-	SIOClient();
-	SIOClient(int port, std::string host);
 	~SIOClient(void);
 
 	bool handshake();
+	bool SIOClient::openSocket();
 	bool init();
 	
 	
-	bool connect();
+	static SIOClient* connect(std::string uri);
 	void monitor();
 	virtual void run();
 	void heartbeat(Poco::Timer& timer);

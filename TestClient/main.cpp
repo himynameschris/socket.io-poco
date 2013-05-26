@@ -1,5 +1,5 @@
 // main.cpp : Defines the entry point for the console application.
-#include "TestClient.h"
+#include "TestTarget.h"
 
 #include "Poco/WindowsConsoleChannel.h"
 #include "Poco/Thread.h"
@@ -15,9 +15,9 @@ int main(int argc, char* argv[])
 	Logger *logger = &(Logger::get("SIOClientLog"));
 	logger->setChannel(new WindowsConsoleChannel());
 
-	TestClient *sio = new TestClient(3000, "localhost");
-	
-	sio->connect();
+	SIOClient *sio = SIOClient::connect("http://localhost:3000");
+
+	TestTarget *t = new TestTarget();
 		
 	logger->information("sio setup complete, sending message");
 

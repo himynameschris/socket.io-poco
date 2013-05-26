@@ -15,6 +15,7 @@
 #include "Poco/String.h"
 #include "Poco/Timer.h"
 #include "Poco/RunnableAdapter.h"
+#include "Poco/URI.h"
 
 #include "SIONotifications.h"
 #include "SIONotificationHandler.h"
@@ -33,6 +34,7 @@ using Poco::Timer;
 using Poco::TimerCallback;
 using Poco::Dynamic::Var;
 using Poco::Net::WebSocket;
+using Poco::URI;
 
 SIOClient::SIOClient()
 {
@@ -46,7 +48,7 @@ SIOClient::SIOClient(int port, std::string host) :
 	_ws = NULL;
 	_nCenter = new NotificationCenter;
 	SIONotificationHandler *sioHandler = new SIONotificationHandler(_nCenter);
-	init();
+
 }
 
 
@@ -63,7 +65,14 @@ bool SIOClient::init()
 {
 	_logger = &(Logger::get("SIOClientLog"));
 
-	return true;
+	if(handshake()) 
+	{
+	
+		if(openSocket()) return true;
+	
+	}
+
+	return false;
 
 }
 
@@ -106,59 +115,60 @@ bool SIOClient::handshake()
 	return false;
 }
 
+bool SIOClient::openSocket() {
 
-bool SIOClient::connect() {
+	UInt16 aport = _port;
+	HTTPRequest req(HTTPRequest::HTTP_GET,"/socket.io/1/websocket/"+_sid,HTTPMessage::HTTP_1_1);
+	HTTPResponse res;
 
-	if(handshake()) {
-	
-		UInt16 aport = _port;
+	do {
+		try {
 		
-		HTTPRequest req(HTTPRequest::HTTP_GET,"/socket.io/1/websocket/"+_sid,HTTPMessage::HTTP_1_1);
-
-		HTTPResponse res;
-
-		do {
-
-			try {
-		
-				_ws = new WebSocket(*_session, req, res);
+			_ws = new WebSocket(*_session, req, res);
 			
+		}
+		catch(NetException ne) {
+			std::cout << ne.displayText() << " : " << ne.code() << " - " << ne.what() << "\n";
+
+			if(_ws) {
+				delete _ws;
+				_ws = NULL;
 			}
-			catch(NetException ne) {
-				std::cout << ne.displayText() << " : " << ne.code() << " - " << ne.what() << "\n";
 
-				if(_ws) {
+			Poco::Thread::sleep(2000);
 
-					delete _ws;
-					_ws = NULL;
+		}
+	} while(_ws == NULL);
 
-				}
+	_logger->information("WebSocket Created\n");
 
-				Poco::Thread::sleep(2000);
+	_connected = true;
 
-			}
-		
-		} while(_ws == NULL);
+	int hbInterval = this->_heartbeat_timeout*.75*1000;
+	_heartbeatTimer = new Timer(hbInterval, hbInterval);
+	TimerCallback<SIOClient> heartbeat(*this, &SIOClient::heartbeat);
+	_heartbeatTimer->start(heartbeat);
 
-		_logger->information("WebSocket Created\n");
+	_thread.start(*this);
 
-		_connected = true;
+	return _connected;
 
-		int hbInterval = this->_heartbeat_timeout*.75*1000;
+}
 
-		_heartbeatTimer = new Timer(hbInterval, hbInterval);
 
-		TimerCallback<SIOClient> heartbeat(*this, &SIOClient::heartbeat);
+SIOClient* SIOClient::connect(std::string uri) {
 
-		_heartbeatTimer->start(heartbeat);
+	URI tmp(uri);
 
-		_thread.start(*this);
+	SIOClient *s = new SIOClient(tmp.getPort(), tmp.getHost());
 
-		return _connected;
+	if(s && s->init()) {
+
+		return s;
 
 	}
 
-	return false;
+	return NULL;
 }
 
 void SIOClient::heartbeat(Poco::Timer& timer) {
