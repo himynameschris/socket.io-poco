@@ -18,7 +18,7 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TestClient.h">
+    <ClInclude Include="TestTarget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -26,7 +26,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TestClient.cpp">
+    <ClCompile Include="TestTarget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -77,12 +77,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="TestClient.h" />
+    <ClInclude Include="TestTarget.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="TestClient.cpp" />
+    <ClCompile Include="TestTarget.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\poco\Foundation\Foundation_vs100.vcxproj">
