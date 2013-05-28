@@ -1,5 +1,3 @@
-#pragma once
-
 #include "SIOEventRegistry.h"
 
 SIOEventRegistry::SIOEventRegistry(void)
