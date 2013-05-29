@@ -1,11 +1,15 @@
 #include "TestTarget.h"
-#include "SIOEventRegistry.h"
-#include "SIOEventTarget.h"
-#include "Poco/Delegate.h"
+//#include "SIOEventRegistry.h"
+//#include "SIOEventTarget.h"
+//#include "Poco/Delegate.h"
+#include "Poco/Logger.h"
+
+using Poco::Logger;
+
 
 TestTarget::TestTarget()
 {
-	this->on("Update", callback(&TestTarget::onUpdate));
+	
 }
 
 void TestTarget::onUpdate(const void* pSender, Object::Ptr& arg)

@@ -68,7 +68,7 @@ void SIONotificationHandler::handleEvent(SIOEvent* pNf)
 	Array::Ptr arr = object->getArray("args");
 	Object::Ptr args = arr->getObject(0);
 
-	SIOEventRegistry::sharedInstance()->fireEvent(pNf->_client, eventName.c_str(), args);
+	pNf->_client->fireEvent(eventName.c_str(), args);
 
 	pNf->release();
 }

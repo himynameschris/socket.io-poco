@@ -11,8 +11,5 @@ private:
 public:
 	virtual ~SIOEventTarget() {};
 	
-	typedef void (SIOEventTarget::*callback)(const void*, Object::Ptr&);
-
-	void on(const char *name, callback c);
 	
 };

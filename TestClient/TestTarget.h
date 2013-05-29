@@ -2,7 +2,7 @@
 
 #include "SIOEventTarget.h"
 
-class TestTarget : SIOEventTarget
+class TestTarget : public SIOEventTarget
 {
 public:
 	TestTarget();

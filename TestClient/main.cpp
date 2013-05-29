@@ -18,6 +18,8 @@ int main(int argc, char* argv[])
 	SIOClient *sio = SIOClient::connect("http://localhost:3000");
 
 	TestTarget *t = new TestTarget();
+
+	sio->on(t, "Update", callback(&TestTarget::onUpdate));
 		
 	logger->information("sio setup complete, sending message");
 
