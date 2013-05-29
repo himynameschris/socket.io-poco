@@ -1,5 +1,5 @@
 #pragma once
-#include "SIOClient.h"
+//#include "SIOClient.h"
 #include "SIOEventTarget.h"
 #include <map>
 
@@ -13,13 +13,15 @@ using Poco::Delegate;
 
 typedef void (SIOEventTarget::*callback)(const void*, Object::Ptr&);
 
+class SIOClient;
+
 class SIOEventRegistry
 {
 public:
 	SIOEventRegistry(void);
 	~SIOEventRegistry(void);
 
-	static SIOEventRegistry *sharedInstance();
+	//static SIOEventRegistry *sharedInstance();
 	bool registerEvent(const char *name, SIOEventTarget *target, callback c);
 	void fireEvent(SIOClient *client, const char *name, Object::Ptr data);
 
@@ -27,5 +29,3 @@ private:
 
 	std::map<std::string, BasicEvent< Object::Ptr > *> mEventMap; //!< the map containing event names and handlers
 };
-
-static SIOEventRegistry *sioEventRegistryInstance = NULL;

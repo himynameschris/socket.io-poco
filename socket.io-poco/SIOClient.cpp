@@ -49,6 +49,8 @@ SIOClient::SIOClient(int port, std::string host) :
 	_nCenter = new NotificationCenter;
 	SIONotificationHandler *sioHandler = new SIONotificationHandler(_nCenter);
 
+	_registry = new SIOEventRegistry();
+
 }
 
 
@@ -58,7 +60,7 @@ SIOClient::~SIOClient(void)
 	delete(_ws);
 	delete(_session);
 	delete(_nCenter);
-
+	delete(_registry);
 }
 
 bool SIOClient::init()
@@ -292,4 +294,15 @@ bool SIOClient::receive() {
 NotificationCenter* SIOClient::getNCenter()
 {
 	return _nCenter;
+}
+
+void SIOClient::on(SIOEventTarget *target, const char *name, callback c)
+{
+	this->_registry->registerEvent(name, target, c);
+}
+
+void SIOClient::fireEvent(const char * name, Object::Ptr args) {
+
+	this->_registry->fireEvent(this, name, args);
+
 }

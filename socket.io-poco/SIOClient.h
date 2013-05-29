@@ -13,6 +13,9 @@
 
 #include "Poco/JSON/Parser.h"
 
+#include "SIOEventRegistry.h"
+#include "SIOEventTarget.h"
+
 using Poco::JSON::Object;
 
 using Poco::Net::HTTPClientSession;
@@ -43,7 +46,9 @@ private:
 	Timer *_heartbeatTimer;
 	Logger *_logger;
 	Thread _thread;
-	NotificationCenter* _nCenter;	
+	NotificationCenter* _nCenter;
+
+	SIOEventRegistry* _registry;
 
 public:
 	~SIOClient(void);
@@ -61,5 +66,11 @@ public:
 	void send(std::string s);
 	void emit(std::string eventname, std::string args);
 	NotificationCenter* getNCenter();
+
+	typedef void (SIOEventTarget::*callback)(const void*, Object::Ptr&);
+
+	void on(SIOEventTarget *target, const char *name, callback c);
+
+	void fireEvent(const char * name, Object::Ptr args);
 };
 

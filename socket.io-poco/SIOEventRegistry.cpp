@@ -9,15 +9,6 @@ SIOEventRegistry::~SIOEventRegistry(void)
 {
 }
 
-SIOEventRegistry* SIOEventRegistry::sharedInstance()
-{
-	if(!sioEventRegistryInstance)
-	{
-		sioEventRegistryInstance = new SIOEventRegistry();
-	}
-    return sioEventRegistryInstance;
-}
-
 bool SIOEventRegistry::registerEvent(const char *name, SIOEventTarget *target, callback c)
 {
 	std::map<std::string,BasicEvent<Object::Ptr> *>::iterator it= mEventMap.find(std::string(name));
