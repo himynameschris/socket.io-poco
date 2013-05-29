@@ -1,8 +1,9 @@
 #pragma once
 #include "Poco/Notification.h"
-#include "SIOClient.h"
 
 using Poco::Notification;
+
+class SIOClient;
 
 class SIOMessage: public Notification
 {
