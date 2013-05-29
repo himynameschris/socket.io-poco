@@ -176,7 +176,7 @@ void SIOClient::heartbeat(Poco::Timer& timer) {
 
 	std::string s = "2::";
 
-	_ws->sendFrame((const void*)(s.c_str()), s.length());
+	_ws->sendFrame(s.data(), s.size());
 
 }
 
@@ -203,7 +203,9 @@ void SIOClient::send(std::string s) {
 	
 	pre << "3:::" << s;
 
-	_ws->sendFrame((const void*)(pre.str().c_str()), pre.str().length());
+	std::string msg = pre.str();
+
+	_ws->sendFrame(msg.data(), msg.size());
 
 }
 
@@ -216,7 +218,9 @@ void SIOClient::emit(std::string eventname, std::string args) {
 
 	_logger->information("event data: %s\n", pre.str());
 
-	_ws->sendFrame((const void*)(pre.str().c_str()), pre.str().length());
+	std::string msg = pre.str();
+
+	_ws->sendFrame(msg.data(), msg.size());
 
 }
 
