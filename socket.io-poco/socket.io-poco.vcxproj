@@ -85,7 +85,6 @@
   <ItemGroup>
     <ClCompile Include="SIOClient.cpp" />
     <ClCompile Include="SIOEventRegistry.cpp" />
-    <ClCompile Include="SIOEventTarget.cpp" />
     <ClCompile Include="SIONotificationHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
