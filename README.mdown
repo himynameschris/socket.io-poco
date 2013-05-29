@@ -1,9 +1,7 @@
 # **Socket.IO - Poco** #
 *A C++ Socket.IO Client using the libraries at [pocoproject.org](http://pocoproject.org/)*
 
-## **#info** ##
-
----
+# **#info** #
 
 ## Currently Supports: ##
 
@@ -22,11 +20,9 @@
 
 - POCO C++ Foundation, Net and JSON libraries
 
-## **#include** ##
+# **#include** #
 
-----------
-
-Win32:
+## Win32: ##
 
 The socket.io library will look for the Poco libraries in the same level as the top directory in the repo, for example:
 
@@ -38,7 +34,7 @@ The socket.io library will look for the Poco libraries in the same level as the 
 
 If you do not follow this scheme, then simply update the socket.io project include directories with the location of your Poco libraries
 
-Android:
+## Android: ##
 
 In your NDK makefile, add the path to the Android.mk file in the repo and add the following lib your static library includes
 
@@ -48,14 +44,11 @@ You will also need to include the paths and modules for the Poco libraries, the 
 
 `LOCAL_WHOLE_STATIC_LIBRARIES += pocofoundation_static poconet_static pocojson_static socketiopoco_static`
 
-## **#using** ##
-
-----------
+# **#using** #
 
 **To create a client object and connect:**
 
-`SIOClient *sio = new SIOClient(3000, "localhost");  
-sio->connect();`
+`SIOClient *sio = SIOClient::connect("http://localhost:3000");`
 
 **To use events and messaging:**
 
@@ -65,17 +58,15 @@ Create methods to handle the callbacks, an event callback function signature mus
 
 `void MyClass::onUpdate(const void* pSender, Object::Ptr& arg)`
 
-Event callbacks can then be registered through the "on" method, similar to the javascript client, providing the function address of the callback method wrapped in the "callback()" typedef
+Event callbacks can then be registered through the "on" method, similar to the javascript client, providing a reference to the target object and the function address of the callback method wrapped in the "callback()" typedef
 
-`sio->on("Update", callback(&MyClass::onUpdate));`
+`sio->on("Update", *pMyClass, callback(&MyClass::onUpdate));`
 
 Note: callback() is a custom typedef used by the socket.io-poco library: 
 
 `typedef void (SIOEventTarget::*callback)(const void*, Object::Ptr&);`
 
-## **#license** ##
-
-----------
+# **#license** #
 
 MIT License
 
