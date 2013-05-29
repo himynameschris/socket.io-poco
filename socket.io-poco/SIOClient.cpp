@@ -18,7 +18,6 @@
 #include "Poco/URI.h"
 
 #include "SIONotifications.h"
-#include "SIONotificationHandler.h"
 
 using Poco::Net::HTTPClientSession;
 using Poco::Net::HTTPRequest;
@@ -36,12 +35,11 @@ using Poco::Dynamic::Var;
 using Poco::Net::WebSocket;
 using Poco::URI;
 
-SIOClient::SIOClient()
-{
-	SIOClient(3000, "localhost");
+SIOClient::SIOClient() {
+	SIOClient("localhost", 3000);
 }
 
-SIOClient::SIOClient(int port, std::string host) :
+SIOClient::SIOClient(std::string host, int port) :
 	_port(port),
 	_host(host)
 {
@@ -54,8 +52,7 @@ SIOClient::SIOClient(int port, std::string host) :
 }
 
 
-SIOClient::~SIOClient(void)
-{
+SIOClient::~SIOClient(void) {
 	delete(_heartbeatTimer);
 	delete(_ws);
 	delete(_session);
@@ -64,8 +61,7 @@ SIOClient::~SIOClient(void)
 	delete(_registry);
 }
 
-bool SIOClient::init()
-{
+bool SIOClient::init() {
 	_logger = &(Logger::get("SIOClientLog"));
 
 	if(handshake()) 
@@ -79,8 +75,7 @@ bool SIOClient::init()
 
 }
 
-bool SIOClient::handshake()
-{
+bool SIOClient::handshake() {
 	UInt16 aport = _port;
 	_session = new HTTPClientSession(_host, aport);
 
@@ -163,7 +158,7 @@ SIOClient* SIOClient::connect(std::string uri) {
 
 	URI tmp(uri);
 
-	SIOClient *s = new SIOClient(tmp.getPort(), tmp.getHost());
+	SIOClient *s = new SIOClient(tmp.getHost(), tmp.getPort());
 
 	if(s && s->init()) {
 
@@ -183,15 +178,13 @@ void SIOClient::heartbeat(Poco::Timer& timer) {
 
 }
 
-void SIOClient::run()
-{
+void SIOClient::run() {
 
 	monitor();
 
 }
  
-void SIOClient::monitor()
-{
+void SIOClient::monitor() {
 	do 
 	{
 		receive();
@@ -292,18 +285,16 @@ bool SIOClient::receive() {
 
 }
 
-NotificationCenter* SIOClient::getNCenter()
-{
+NotificationCenter* SIOClient::getNCenter() {
 	return _nCenter;
 }
 
-void SIOClient::on(SIOEventTarget *target, const char *name, callback c)
-{
-	this->_registry->registerEvent(name, target, c);
+void SIOClient::on(const char *name, SIOEventTarget *target, callback c) {
+	_registry->registerEvent(name, target, c);
 }
 
 void SIOClient::fireEvent(const char * name, Object::Ptr args) {
 
-	this->_registry->fireEvent(this, name, args);
+	_registry->fireEvent(this, name, args);
 
 }

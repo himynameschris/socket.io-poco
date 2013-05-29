@@ -13,8 +13,10 @@
 
 #include "Poco/JSON/Parser.h"
 
+#include "SIONotificationHandler.h"
 #include "SIOEventRegistry.h"
 #include "SIOEventTarget.h"
+
 
 using Poco::JSON::Object;
 
@@ -32,7 +34,7 @@ class SIOClient: public Poco::Runnable
 {
 private:
 	SIOClient();
-	SIOClient(int port, std::string host);
+	SIOClient(std::string host, int port);
 	
 	std::string _sid;
 	int _heartbeat_timeout;
@@ -49,13 +51,13 @@ private:
 	NotificationCenter* _nCenter;
 
 	SIOEventRegistry* _registry;
-	SIONotificationHandler *_sioHandler
+	SIONotificationHandler *_sioHandler;
 
 public:
 	~SIOClient(void);
 
 	bool handshake();
-	bool SIOClient::openSocket();
+	bool openSocket();
 	bool init();
 	
 	
@@ -70,7 +72,7 @@ public:
 
 	typedef void (SIOEventTarget::*callback)(const void*, Object::Ptr&);
 
-	void on(SIOEventTarget *target, const char *name, callback c);
+	void on(const char *name, SIOEventTarget *target, callback c);
 
 	void fireEvent(const char * name, Object::Ptr args);
 };
