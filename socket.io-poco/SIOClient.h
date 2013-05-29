@@ -49,6 +49,7 @@ private:
 	NotificationCenter* _nCenter;
 
 	SIOEventRegistry* _registry;
+	SIONotificationHandler *_sioHandler
 
 public:
 	~SIOClient(void);

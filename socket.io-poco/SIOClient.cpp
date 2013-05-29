@@ -47,7 +47,7 @@ SIOClient::SIOClient(int port, std::string host) :
 {
 	_ws = NULL;
 	_nCenter = new NotificationCenter;
-	SIONotificationHandler *sioHandler = new SIONotificationHandler(_nCenter);
+	_sioHandler = new SIONotificationHandler(_nCenter);
 
 	_registry = new SIOEventRegistry();
 
@@ -59,6 +59,7 @@ SIOClient::~SIOClient(void)
 	delete(_heartbeatTimer);
 	delete(_ws);
 	delete(_session);
+	delete(_sioHandler);
 	delete(_nCenter);
 	delete(_registry);
 }
