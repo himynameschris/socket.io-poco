@@ -1,73 +1,35 @@
 #pragma once
 
-#include <string>
+#include "SIOClientImpl.h"
 
-#include "Poco/Net/HTTPClientSession.h"
-#include "Poco/Net/WebSocket.h"
-#include "Poco/Logger.h"
-#include "Poco/Timer.h"
-#include "Poco/NotificationCenter.h"
-#include "Poco/Thread.h"
-#include "Poco/ThreadTarget.h"
-#include "Poco/RunnableAdapter.h"
+#include "Poco/URI.h"
 
-#include "Poco/JSON/Parser.h"
+using Poco::URI;
 
-#include "SIONotificationHandler.h"
-#include "SIOEventRegistry.h"
-#include "SIOEventTarget.h"
-
-
-using Poco::JSON::Object;
-
-using Poco::Net::HTTPClientSession;
-using Poco::Net::WebSocket;
-using Poco::Logger;
-using Poco::Timer;
-using Poco::TimerCallback;
-using Poco::NotificationCenter;
-using Poco::Thread;
-using Poco::ThreadTarget;
-
-
-class SIOClient: public Poco::Runnable
+class SIOClient
 {
 private:
-	SIOClient();
-	SIOClient(std::string host, int port);
-	
-	std::string _sid;
-	int _heartbeat_timeout;
-	int _timeout;
-	std::string _host;
-	int _port;
-	bool _connected;
+	~SIOClient();
 
-	HTTPClientSession *_session;
-	WebSocket *_ws;
-	Timer *_heartbeatTimer;
-	Logger *_logger;
-	Thread _thread;
+	SIOClientImpl *_socket;
+	
+	std::string _uri;
+	//URI _uri;
+
 	NotificationCenter* _nCenter;
 
-	SIOEventRegistry* _registry;
-	SIONotificationHandler *_sioHandler;
+	SIOEventRegistry *_registry;
+	SIONotificationHandler *_sioHandler; 
 
 public:
-	~SIOClient(void);
+	SIOClient(std::string uri, SIOClientImpl *impl);
 
-	bool handshake();
-	bool openSocket();
 	bool init();
-	
-	
+
 	static SIOClient* connect(std::string uri);
-	void monitor();
-	virtual void run();
-	void heartbeat(Poco::Timer& timer);
-	bool receive();
 	void send(std::string s);
 	void emit(std::string eventname, std::string args);
+	std::string getUri();
 	NotificationCenter* getNCenter();
 
 	typedef void (SIOEventTarget::*callback)(const void*, Object::Ptr&);
@@ -76,4 +38,3 @@ public:
 
 	void fireEvent(const char * name, Object::Ptr args);
 };
-
