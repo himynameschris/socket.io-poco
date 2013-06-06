@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SIOClient.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SIONotificationHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -30,15 +27,30 @@
     <ClInclude Include="SIOEventTarget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SIOClientImpl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SIOClient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SIOClientRegistry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SIOClient.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SIONotificationHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SIOEventRegistry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SIOClientImpl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SIOClient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SIOClientRegistry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
