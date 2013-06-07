@@ -5,9 +5,8 @@
 
 using Poco::URI;
 
-SIOClient::SIOClient(std::string uri, SIOClientImpl *impl)
-	: _socket(impl),
-	_uri(uri)
+SIOClient::SIOClient(std::string uri, std::string endpoint, SIOClientImpl *impl)
+	: _uri(uri), _endpoint(endpoint), _socket(impl)
 {
 	_nCenter = new NotificationCenter;
 	_sioHandler = new SIONotificationHandler(_nCenter);
@@ -26,7 +25,7 @@ SIOClient* SIOClient::connect(std::string uri) {
 	//check if connection to endpoint exists 
 	URI tmp_uri(uri);
 	std::stringstream ss;
-	ss << tmp_uri.getHost() << ":" << tmp_uri.getPort() << "/" << tmp_uri.getPath();
+	ss << tmp_uri.getHost() << ":" << tmp_uri.getPort() << tmp_uri.getPath();
 	std::string fullpath = ss.str();
 	SIOClient *c = SIOClientRegistry::instance()->getClient(fullpath);
 
@@ -46,8 +45,8 @@ SIOClient* SIOClient::connect(std::string uri) {
 			
 		} 
 
-		//TODO: impl->connect to new endpoint
-		c = new SIOClient(fullpath, impl);
+		impl->connectToEndpoint(tmp_uri.getPath());
+		c = new SIOClient(fullpath, tmp_uri.getPath(), impl);
 		SIOClientRegistry::instance()->addClient(c);
 		
 	}
@@ -79,12 +78,12 @@ void SIOClient::fireEvent(const char * name, Object::Ptr args) {
 
 void SIOClient::send(std::string s) {
 
-
+	_socket->send(_endpoint, s);
 
 }
 
 void SIOClient::emit(std::string eventname, std::string args) {
 
-	
+	_socket->emit(_endpoint, eventname, args);
 
 }

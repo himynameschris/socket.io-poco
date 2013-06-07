@@ -14,6 +14,7 @@ private:
 	SIOClientImpl *_socket;
 	
 	std::string _uri;
+	std::string _endpoint;
 	//URI _uri;
 
 	NotificationCenter* _nCenter;
@@ -22,7 +23,7 @@ private:
 	SIONotificationHandler *_sioHandler; 
 
 public:
-	SIOClient(std::string uri, SIOClientImpl *impl);
+	SIOClient(std::string uri, std::string endpoint, SIOClientImpl *impl);
 
 	bool init();
 

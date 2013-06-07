@@ -41,7 +41,9 @@ private:
 	int _timeout;
 	std::string _host;
 	int _port;
+	std::string _uri;
 	bool _connected;
+	
 
 	HTTPClientSession *_session;
 	WebSocket *_ws;
@@ -61,6 +63,7 @@ public:
 	
 	
 	static SIOClientImpl* connect(std::string host, int port);
+	void connectToEndpoint(std::string endpoint);
 	void monitor();
 	virtual void run();
 	void heartbeat(Poco::Timer& timer);

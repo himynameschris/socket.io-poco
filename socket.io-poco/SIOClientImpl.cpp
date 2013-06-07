@@ -18,6 +18,8 @@
 #include "Poco/URI.h"
 
 #include "SIONotifications.h"
+#include "SIOClientRegistry.h"
+#include "SIOClient.h"
 
 using Poco::Net::HTTPClientSession;
 using Poco::Net::HTTPRequest;
@@ -35,6 +37,7 @@ using Poco::Dynamic::Var;
 using Poco::Net::WebSocket;
 using Poco::URI;
 
+
 SIOClientImpl::SIOClientImpl() {
 	SIOClientImpl("localhost", 3000);
 }
@@ -43,6 +46,9 @@ SIOClientImpl::SIOClientImpl(std::string host, int port) :
 	_port(port),
 	_host(host)
 {
+	std::stringstream s;
+	s << host << ":" << port;
+	_uri = s.str();
 	_ws = NULL;	
 
 }
@@ -159,6 +165,14 @@ SIOClientImpl* SIOClientImpl::connect(std::string host, int port) {
 	return NULL;
 }
 
+void SIOClientImpl::connectToEndpoint(std::string endpoint) {
+
+	std::string s = "1::" + endpoint;	
+
+	_ws->sendFrame(s.data(), s.size());
+
+}
+
 void SIOClientImpl::heartbeat(Poco::Timer& timer) {
 	_logger->information("heartbeat called\n");
 
@@ -187,7 +201,7 @@ void SIOClientImpl::send(std::string endpoint, std::string s) {
 
 	std::stringstream pre;
 	
-	pre << "3:::" << s;
+	pre << "3::" << endpoint << ":" << s;
 
 	std::string msg = pre.str();
 
@@ -200,7 +214,7 @@ void SIOClientImpl::emit(std::string endpoint, std::string eventname, std::strin
 
 	std::stringstream pre;
 	
-	pre << "5:::{\"name\":\"" << eventname << "\",\"args\":" << args << "}";
+	pre << "5::" << endpoint << ":{\"name\":\"" << eventname << "\",\"args\":" << args << "}";
 
 	_logger->information("event data: %s\n", pre.str());
 
@@ -228,6 +242,12 @@ bool SIOClientImpl::receive() {
 
 	int control = atoi(&buffer[0]);
 	StringTokenizer st(s.str(), ":");
+	std::string endpoint = st[2];
+
+	std::string uri = _uri;
+	uri += endpoint;
+
+	SIOClient *c = SIOClientRegistry::instance()->getClient(uri);
 
 	std::string payload = "";
 
@@ -243,13 +263,13 @@ bool SIOClientImpl::receive() {
 			break;
 		case 3:
 			_logger->information("Message received\n");
-			//TODO: lookup endpoint and provide message to client			
-			//_nCenter->postNotification(new SIOMessage(st[3]));
+
+			c->getNCenter()->postNotification(new SIOMessage(st[3]));
 			break;
 		case 4:
 			_logger->information("JSON Message Received\n");
-			//TODO: lookup endpoint and provide message to client
-			//_nCenter->postNotification(new SIOJSONMessage(st[3]));
+			
+			c->getNCenter()->postNotification(new SIOJSONMessage(st[3]));
 			break;
 		case 5:
 			_logger->information("Event Dispatched\n");
@@ -260,9 +280,7 @@ bool SIOClientImpl::receive() {
 				payload += st[i];
 			}
 
-
-			//need to lookup correct sioclient for the event based on namespace and send to it
-			//_nCenter->postNotification(new SIOEvent(this, payload));
+			c->getNCenter()->postNotification(new SIOEvent(c, payload));
 			break;
 		case 6:
 			_logger->information("Message Ack\n");
