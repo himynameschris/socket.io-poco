@@ -4,6 +4,7 @@
 
 #include "SIOClient.h"
 #include "TestTarget.h"
+#include "TestEndpointTarget.h"
 
 #include <iostream>
 
@@ -33,9 +34,18 @@ int main(int argc, char* argv[])
 	logger->information("sending message\n");
 	sio->send("Hello Socket.IO");
 
-	//test the event emitter
+	//test the event emitter, this will return the same event so let's register a callback too
+	sio->on("testevent", target, callback(&TestTarget::ontestevent));
 	logger->information("emitting test event\n");
 	sio->emit("testevent", "[{\"name\":\"myname\",\"type\":\"mytype\"}]");
+
+	//test connecting to an endpoint 'testpoint'
+	TestEndpointTarget *target2 = new TestEndpointTarget();
+	SIOClient *testpoint = SIOClient::connect("http://localhost:3000/testpoint");
+	testpoint->send("Hello Socket.IO Testpoint");
+	testpoint->on("Update", target2, callback(&TestEndpointTarget::onUpdate));
+	testpoint->on("testevent", target2, callback(&TestEndpointTarget::ontestevent));
+	testpoint->emit("testevent", "[{\"name\":\"myname\",\"type\":\"mytype\"}]");
 
 	//enter a do loop to keep the program and connection alive
 	//ctrl+c or close window to end the program and close the connection

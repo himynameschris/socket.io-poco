@@ -2,11 +2,11 @@
 
 #include "SIOEventTarget.h"
 
-class TestTarget : public SIOEventTarget
+class TestEndpointTarget : public SIOEventTarget
 {
 public:
-	TestTarget();
-	~TestTarget() {};
+	TestEndpointTarget();
+	~TestEndpointTarget() {};
 
 	void onUpdate(const void* pSender, Object::Ptr& arg);
 	void ontestevent(const void* pSender, Object::Ptr& arg);

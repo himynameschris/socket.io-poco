@@ -77,11 +77,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="TestEndpointTarget.h" />
     <ClInclude Include="TestTarget.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="TestEndpointTarget.cpp" />
     <ClCompile Include="TestTarget.cpp" />
   </ItemGroup>
   <ItemGroup>
