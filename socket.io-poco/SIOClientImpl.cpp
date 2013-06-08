@@ -65,7 +65,6 @@ SIOClientImpl::~SIOClientImpl(void) {
 
 	delete(_heartbeatTimer);
 	delete(_session);
-	_logger->release();
 
 	SIOClientRegistry::instance()->removeSocket(_uri);
 }
