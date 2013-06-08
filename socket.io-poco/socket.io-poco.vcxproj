@@ -51,7 +51,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;SOCKETIOPOCO_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\poco\Foundation\include;$(ProjectDir)..\..\poco\Net\include;$(ProjectDir)..\..\poco\JSON\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\poco\Foundation\include;$(ProjectDir)..\..\poco\Net\include;$(ProjectDir)..\..\poco\JSON\include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -76,22 +76,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="SIOClient.h" />
-    <ClInclude Include="SIOClientImpl.h" />
-    <ClInclude Include="SIOClientRegistry.h" />
-    <ClInclude Include="SIOEventRegistry.h" />
-    <ClInclude Include="SIOEventTarget.h" />
-    <ClInclude Include="SIONotificationHandler.h" />
-    <ClInclude Include="SIONotifications.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="SIOClient.cpp" />
-    <ClCompile Include="SIOClientImpl.cpp" />
-    <ClCompile Include="SIOClientRegistry.cpp" />
-    <ClCompile Include="SIOEventRegistry.cpp" />
-    <ClCompile Include="SIONotificationHandler.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\poco\Foundation\Foundation_vs100.vcxproj">
       <Project>{8164d41d-b053-405b-826c-cf37ac0ef176}</Project>
     </ProjectReference>
@@ -101,6 +85,22 @@
     <ProjectReference Include="..\..\poco\Net\Net_vs100.vcxproj">
       <Project>{b057a1fe-09f7-465e-b8b5-e1b659051d76}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\SIOClient.h" />
+    <ClInclude Include="include\SIOClientImpl.h" />
+    <ClInclude Include="include\SIOClientRegistry.h" />
+    <ClInclude Include="include\SIOEventRegistry.h" />
+    <ClInclude Include="include\SIOEventTarget.h" />
+    <ClInclude Include="include\SIONotificationHandler.h" />
+    <ClInclude Include="include\SIONotifications.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\SIOClient.cpp" />
+    <ClCompile Include="src\SIOClientImpl.cpp" />
+    <ClCompile Include="src\SIOClientRegistry.cpp" />
+    <ClCompile Include="src\SIOEventRegistry.cpp" />
+    <ClCompile Include="src\SIONotificationHandler.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

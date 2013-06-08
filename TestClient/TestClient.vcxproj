@@ -49,7 +49,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)..\poco\Foundation\include;$(SolutionDir)..\poco\Net\include;$(SolutionDir)..\poco\JSON\include;$(SolutionDir)\socket.io-poco;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\poco\Foundation\include;$(SolutionDir)..\poco\Net\include;$(SolutionDir)..\poco\JSON\include;$(SolutionDir)\socket.io-poco\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
