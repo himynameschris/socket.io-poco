@@ -28,6 +28,7 @@ public:
 	bool init();
 
 	static SIOClient* connect(std::string uri);
+	void disconnect();
 	void send(std::string s);
 	void emit(std::string eventname, std::string args);
 	std::string getUri();

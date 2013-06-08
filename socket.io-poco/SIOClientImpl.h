@@ -35,6 +35,7 @@ class SIOClientImpl: public Poco::Runnable
 private:
 	SIOClientImpl();
 	SIOClientImpl(std::string host, int port);
+	~SIOClientImpl(void);
 	
 	std::string _sid;
 	int _heartbeat_timeout;
@@ -50,19 +51,23 @@ private:
 	Timer *_heartbeatTimer;
 	Logger *_logger;
 	Thread _thread;
+
+	int _refCount;
 	
 	//SIOEventRegistry* _registry;
 	//SIONotificationHandler *_sioHandler;
 
 public:
-	~SIOClientImpl(void);
 
 	bool handshake();
 	bool openSocket();
 	bool init();
-	
+
+	void release();
+	void addref();	
 	
 	static SIOClientImpl* connect(std::string host, int port);
+	void disconnect(std::string endpoint);
 	void connectToEndpoint(std::string endpoint);
 	void monitor();
 	virtual void run();

@@ -44,7 +44,8 @@ SIOClientImpl::SIOClientImpl() {
 
 SIOClientImpl::SIOClientImpl(std::string host, int port) :
 	_port(port),
-	_host(host)
+	_host(host),
+	_refCount(0)
 {
 	std::stringstream s;
 	s << host << ":" << port;
@@ -54,9 +55,19 @@ SIOClientImpl::SIOClientImpl(std::string host, int port) :
 }
 
 SIOClientImpl::~SIOClientImpl(void) {
-	delete(_heartbeatTimer);
+	
+	_thread.join();
+
+	disconnect("");
+
+	_ws->shutdown();
 	delete(_ws);
+
+	delete(_heartbeatTimer);
 	delete(_session);
+	_logger->release();
+
+	SIOClientRegistry::instance()->removeSocket(_uri);
 }
 
 bool SIOClientImpl::init() {
@@ -163,6 +174,19 @@ SIOClientImpl* SIOClientImpl::connect(std::string host, int port) {
 	}
 
 	return NULL;
+}
+
+void SIOClientImpl::disconnect(std::string endpoint) {
+	std::string s = "0::" + endpoint;
+
+	if(endpoint == "") {
+
+		_heartbeatTimer->stop();
+		_connected = false;
+
+	}
+
+	_ws->sendFrame(s.data(), s.size());
 }
 
 void SIOClientImpl::connectToEndpoint(std::string endpoint) {
@@ -297,3 +321,10 @@ bool SIOClientImpl::receive() {
 
 }
 
+void SIOClientImpl::addref() {
+	_refCount++;
+}
+
+void SIOClientImpl::release() {
+	if(--_refCount == 0) delete this;
+}

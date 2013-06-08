@@ -8,6 +8,8 @@ using Poco::URI;
 SIOClient::SIOClient(std::string uri, std::string endpoint, SIOClientImpl *impl)
 	: _uri(uri), _endpoint(endpoint), _socket(impl)
 {
+	_socket->addref();
+
 	_nCenter = new NotificationCenter;
 	_sioHandler = new SIONotificationHandler(_nCenter);
 
@@ -15,9 +17,12 @@ SIOClient::SIOClient(std::string uri, std::string endpoint, SIOClientImpl *impl)
 }
 
 SIOClient::~SIOClient() {
+	_socket->release();
 	delete(_sioHandler);
 	delete(_nCenter);
 	delete(_registry);
+
+	SIOClientRegistry::instance()->removeClient(_uri);
 }
 
 SIOClient* SIOClient::connect(std::string uri) {
@@ -44,8 +49,11 @@ SIOClient* SIOClient::connect(std::string uri) {
 			SIOClientRegistry::instance()->addSocket(impl, spath);
 			
 		} 
+		
+		if(tmp_uri.getPath() != "") {
+			impl->connectToEndpoint(tmp_uri.getPath());
+		}
 
-		impl->connectToEndpoint(tmp_uri.getPath());
 		c = new SIOClient(fullpath, tmp_uri.getPath(), impl);
 		SIOClientRegistry::instance()->addClient(c);
 		
@@ -54,6 +62,11 @@ SIOClient* SIOClient::connect(std::string uri) {
 	//TODO: add method to handle force new connection
 	return c;
 
+}
+
+void SIOClient::disconnect() {
+	_socket->disconnect(_endpoint);
+	delete this;
 }
 
 std::string SIOClient::getUri() {
