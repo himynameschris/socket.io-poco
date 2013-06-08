@@ -49,7 +49,7 @@ int main(int argc, char* argv[])
 
 	//wait for user input to move to next section of code
 	//socket receiving occurs in another thread and will not be halted
-	logger->information("Press any key to continue...");
+	logger->information("Press ENTER to continue...");
 	std::cin.get();
 
 	//test disconnecting a single endpoint, other endpoints stay connected
@@ -58,7 +58,7 @@ int main(int argc, char* argv[])
 	//disconnecting the default socket with no endpoint will also disconnect all endpoints
 	sio->disconnect();
 
-	logger->information("Press any key to quit...");
+	logger->information("Press ENTER to quit...");
 	std::cin.get();
 
 	return 0;
