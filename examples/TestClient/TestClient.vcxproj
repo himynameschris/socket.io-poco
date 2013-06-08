@@ -87,16 +87,16 @@
     <ClCompile Include="TestTarget.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\poco\Foundation\Foundation_vs100.vcxproj">
+    <ProjectReference Include="..\..\..\poco\Foundation\Foundation_vs100.vcxproj">
       <Project>{8164d41d-b053-405b-826c-cf37ac0ef176}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\poco\JSON\JSON_vs100.vcxproj">
+    <ProjectReference Include="..\..\..\poco\JSON\JSON_vs100.vcxproj">
       <Project>{a63135b8-0dfc-428c-af90-bc020be83d0c}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\poco\Net\Net_vs100.vcxproj">
+    <ProjectReference Include="..\..\..\poco\Net\Net_vs100.vcxproj">
       <Project>{b057a1fe-09f7-465e-b8b5-e1b659051d76}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\socket.io-poco\socket.io-poco.vcxproj">
+    <ProjectReference Include="..\..\socket.io-poco\socket.io-poco.vcxproj">
       <Project>{6d476f8d-a672-4c3a-bfc1-a20396736d85}</Project>
     </ProjectReference>
   </ItemGroup>
