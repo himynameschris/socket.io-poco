@@ -2,9 +2,9 @@
 
 #include "SIOClientImpl.h"
 
-#include "Poco/URI.h"
+#include "Poco/JSON/Object.h"
 
-using Poco::URI;
+using Poco::JSON::Object;
 
 class SIOClient
 {
@@ -15,7 +15,6 @@ private:
 	
 	std::string _uri;
 	std::string _endpoint;
-	//URI _uri;
 
 	NotificationCenter* _nCenter;
 
