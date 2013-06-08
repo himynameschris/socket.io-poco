@@ -21,9 +21,11 @@ public:
 
 	SIOClient *getClient(std::string uri);
 	void addClient(SIOClient *client);
+	void removeClient(std::string uri);
 
 	SIOClientImpl *getSocket(std::string uri);
 	void addSocket(SIOClientImpl *socket, std::string uri);
+	void removeSocket(std::string uri);
 	
 };
 

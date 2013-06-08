@@ -34,6 +34,10 @@ void SIOClientRegistry::addClient(SIOClient *client) {
 
 }
 
+void SIOClientRegistry::removeClient(std::string uri) {
+	_clientMap.erase(uri);
+}
+
 SIOClientImpl *SIOClientRegistry::getSocket(std::string uri) {
 
 	SIOClientImpl *c = NULL;
@@ -54,4 +58,8 @@ void SIOClientRegistry::addSocket(SIOClientImpl *socket, std::string uri) {
 
 	_socketMap[uri] = socket;
 
+}
+
+void SIOClientRegistry::removeSocket(std::string uri) {
+	_socketMap.erase(uri);
 }
