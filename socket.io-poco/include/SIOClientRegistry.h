@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <string>
 
 class SIOClient;
 class SIOClientImpl;

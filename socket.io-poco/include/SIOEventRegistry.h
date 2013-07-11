@@ -2,6 +2,7 @@
 
 #include "SIOEventTarget.h"
 #include <map>
+#include <string>
 
 #include "Poco/JSON/Parser.h"
 #include "Poco/BasicEvent.h"
