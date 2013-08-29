@@ -91,7 +91,12 @@ bool SIOClientImpl::handshake() {
 
 	HTTPResponse res;
 
-	_session->sendRequest(req);
+	try {
+		_session->sendRequest(req);
+	} catch (std::exception &e) {
+		return false;
+	}
+
 	std::istream& rs = _session->receiveResponse(res);
 
 	std::cout << res.getStatus() << " " << res.getReason() << std::endl;
