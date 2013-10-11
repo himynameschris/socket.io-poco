@@ -46,6 +46,9 @@ SIOClient* SIOClient::connect(std::string uri) {
 		if(!impl) {
 
 			impl = SIOClientImpl::connect(tmp_uri.getHost(), tmp_uri.getPort());
+
+			if (!impl) return NULL; //connect failed
+
 			SIOClientRegistry::instance()->addSocket(impl, spath);
 			
 		} 
