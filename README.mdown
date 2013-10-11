@@ -47,14 +47,14 @@ You will also need to include the paths and modules for the Poco libraries, the 
 ## CMake: ##
 
 ```
-cd socket.io-poco
+cd [socket.io-poco root directory]/socket.io-poco # careful here, I mean the INNER socket.io-poco directory
 mkdir build
 cd build
 cmake ..
 make
 ```
 
-Now you have a "libsocketiopoco" shared library in ./src that you can link against in your application.
+Now you have a "libsocketiopoco" shared library in ./src that you can copy where you wish, and link against in your application.
 
 # **#using** #
 
