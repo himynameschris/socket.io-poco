@@ -27,9 +27,9 @@
 The socket.io-poco library will look for the Poco libraries in the same directory as the socket.io-poco repo, for example:
 
 
-> .\myprojectdir\  
-> .\myprojectdir\lib\socket.io-poco\  
-> .\myprojectdir\lib\poco\  
+> .\myprojectdir\
+> .\myprojectdir\lib\socket.io-poco\
+> .\myprojectdir\lib\poco\
 > .\myprojectdir\myproject\
 
 If you do not follow this scheme, then simply update the socket.io project include directories with the location of your Poco libraries
@@ -43,6 +43,18 @@ In your NDK makefile, add the path to the Android.mk file in the repo's source f
 You will also need to include the paths and modules for the Poco libraries, the android makefiles can be found in the android folder of the socket.io repo (add them to the Foundation, JSON and Net include folders)
 
 `LOCAL_WHOLE_STATIC_LIBRARIES += pocofoundation_static poconet_static pocojson_static socketiopoco_static`
+
+## CMake: ##
+
+```
+cd [socket.io-poco root directory]/socket.io-poco # careful here, I mean the INNER socket.io-poco directory
+mkdir build
+cd build
+cmake ..
+make
+```
+
+Now you have a "libsocketiopoco" shared library in ./src that you can copy where you wish, and link against in your application.
 
 # **#using** #
 
@@ -66,7 +78,7 @@ Simply use the send method and pass the message string
 
 `sio->on("Update", *pMyClass, callback(&MyClass::onUpdate));`
 
-Note: callback() is a custom typedef used by the socket.io-poco library, defined as: 
+Note: callback() is a custom typedef used by the socket.io-poco library, defined as:
 
 `typedef void (SIOEventTarget::*callback)(const void*, Object::Ptr&);`
 
