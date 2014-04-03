@@ -1,9 +1,11 @@
 #include "SIOClientRegistry.h"
 #include "SIOClient.h"
 
-SIOClientRegistry *SIOClientRegistry::_inst = NULL;
+sio_poco::SIOClientRegistry *
+sio_poco::SIOClientRegistry::_inst = NULL;
 
-SIOClientRegistry *SIOClientRegistry::instance() {
+sio_poco::SIOClientRegistry *
+sio_poco::SIOClientRegistry::instance() {
 	
 	if(!_inst)
 		_inst = new SIOClientRegistry();
@@ -12,7 +14,8 @@ SIOClientRegistry *SIOClientRegistry::instance() {
 
 }
 
-SIOClient *SIOClientRegistry::getClient(std::string uri) {
+sio_poco::SIOClient *
+sio_poco::SIOClientRegistry::getClient(std::string uri) {
 
 	SIOClient *c = NULL;
 
@@ -28,17 +31,20 @@ SIOClient *SIOClientRegistry::getClient(std::string uri) {
 
 }
 
-void SIOClientRegistry::addClient(SIOClient *client) {
+void 
+sio_poco::SIOClientRegistry::addClient(SIOClient *client) {
 
 	_clientMap[client->getUri()] = client;
 
 }
 
-void SIOClientRegistry::removeClient(std::string uri) {
+void 
+sio_poco::SIOClientRegistry::removeClient(std::string uri) {
 	_clientMap.erase(uri);
 }
 
-SIOClientImpl *SIOClientRegistry::getSocket(std::string uri) {
+sio_poco::SIOClientImpl *
+sio_poco::SIOClientRegistry::getSocket(std::string uri) {
 
 	SIOClientImpl *c = NULL;
 
@@ -54,12 +60,14 @@ SIOClientImpl *SIOClientRegistry::getSocket(std::string uri) {
 
 }
 
-void SIOClientRegistry::addSocket(SIOClientImpl *socket, std::string uri) {
+void 
+sio_poco::SIOClientRegistry::addSocket(SIOClientImpl *socket, std::string uri) {
 
 	_socketMap[uri] = socket;
 
 }
 
-void SIOClientRegistry::removeSocket(std::string uri) {
+void 
+sio_poco::SIOClientRegistry::removeSocket(std::string uri) {
 	_socketMap.erase(uri);
 }

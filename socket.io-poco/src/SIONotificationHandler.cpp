@@ -14,12 +14,14 @@ using Poco::JSON::ParseHandler;
 using Poco::Dynamic::Var;
 using Poco::JSON::Array;
 using Poco::JSON::Object;
+using Poco::NotificationCenter;
+using Poco::Logger;
 
-SIONotificationHandler::SIONotificationHandler(void)
+sio_poco::SIONotificationHandler::SIONotificationHandler(void)
 {
 }
 
-SIONotificationHandler::SIONotificationHandler(NotificationCenter* nc)
+sio_poco::SIONotificationHandler::SIONotificationHandler(NotificationCenter* nc)
 {
 	_nCenter = nc;
 	registerCallbacks(_nCenter);
@@ -27,7 +29,7 @@ SIONotificationHandler::SIONotificationHandler(NotificationCenter* nc)
 	_logger = &(Logger::get("SIOClientLog"));
 }
 
-SIONotificationHandler::~SIONotificationHandler(void)
+sio_poco::SIONotificationHandler::~SIONotificationHandler(void)
 {
 	_nCenter->removeObserver(
 		Observer<SIONotificationHandler, SIOMessage>(*this, &SIONotificationHandler::handleMessage)
@@ -40,19 +42,22 @@ SIONotificationHandler::~SIONotificationHandler(void)
 		);
 }
 
-void SIONotificationHandler::handleMessage(SIOMessage* pNf)
+void 
+sio_poco::SIONotificationHandler::handleMessage(SIOMessage* pNf)
 {
 	_logger->information("handling message, message received: %s",pNf->getMsg());
 	pNf->release();
 }
 
-void SIONotificationHandler::handleJSONMessage(SIOJSONMessage* pNf)
+void 
+sio_poco::SIONotificationHandler::handleJSONMessage(SIOJSONMessage* pNf)
 {
 	_logger->information("handling JSON message");
 	pNf->release();
 }
 
-void SIONotificationHandler::handleEvent(SIOEvent* pNf)
+void 
+sio_poco::SIONotificationHandler::handleEvent(SIOEvent* pNf)
 {
 	_logger->information("handling Event");
 	_logger->information("data: %s", pNf->_data);
@@ -74,7 +79,8 @@ void SIONotificationHandler::handleEvent(SIOEvent* pNf)
 	pNf->release();
 }
 
-void SIONotificationHandler::registerCallbacks(NotificationCenter* nc)
+void 
+sio_poco::SIONotificationHandler::registerCallbacks(NotificationCenter* nc)
 {
 	_nCenter = nc;
 
@@ -89,7 +95,8 @@ void SIONotificationHandler::registerCallbacks(NotificationCenter* nc)
 		);
 }
 
-void SIONotificationHandler::setNCenter(NotificationCenter* nc)
+void 
+sio_poco::SIONotificationHandler::setNCenter(NotificationCenter* nc)
 {
 	_nCenter = nc;
 	registerCallbacks(_nCenter);

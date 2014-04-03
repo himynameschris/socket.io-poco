@@ -1,15 +1,18 @@
 #include "SIOEventRegistry.h"
 
-SIOEventRegistry::SIOEventRegistry(void)
+using Poco::BasicEvent;
+using Poco::JSON::Object;
+
+sio_poco::SIOEventRegistry::SIOEventRegistry(void)
 {
 }
 
-
-SIOEventRegistry::~SIOEventRegistry(void)
+sio_poco::SIOEventRegistry::~SIOEventRegistry(void)
 {
 }
 
-bool SIOEventRegistry::registerEvent(const char *name, SIOEventTarget *target, callback c)
+bool 
+sio_poco::SIOEventRegistry::registerEvent(const char *name, SIOEventTarget *target, callback c)
 {
 	std::map<std::string,BasicEvent<Object::Ptr> *>::iterator it= mEventMap.find(std::string(name));
 	if(it != mEventMap.end())
@@ -33,7 +36,8 @@ bool SIOEventRegistry::registerEvent(const char *name, SIOEventTarget *target, c
 	return true;
 }
 
-void SIOEventRegistry::fireEvent(SIOClient *client, const char *name, Object::Ptr data)
+void 
+sio_poco::SIOEventRegistry::fireEvent(SIOClient *client, const char *name, Object::Ptr data)
 {
 
 	std::map<std::string,BasicEvent<Object::Ptr> *>::iterator it= mEventMap.find(std::string(name));

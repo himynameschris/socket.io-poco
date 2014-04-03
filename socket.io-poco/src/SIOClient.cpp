@@ -3,9 +3,11 @@
 
 #include "Poco/URI.h"
 
+using Poco::NotificationCenter;
 using Poco::URI;
+using Poco::JSON::Object;
 
-SIOClient::SIOClient(std::string uri, std::string endpoint, SIOClientImpl *impl)
+sio_poco::SIOClient::SIOClient(std::string uri, std::string endpoint, SIOClientImpl *impl)
 	: _uri(uri), _endpoint(endpoint), _socket(impl)
 {
 	_socket->addref();
@@ -16,7 +18,7 @@ SIOClient::SIOClient(std::string uri, std::string endpoint, SIOClientImpl *impl)
 	_registry = new SIOEventRegistry();
 }
 
-SIOClient::~SIOClient() {
+sio_poco::SIOClient::~SIOClient() {
 	_socket->release();
 	delete(_sioHandler);
 	delete(_nCenter);
@@ -25,7 +27,8 @@ SIOClient::~SIOClient() {
 	SIOClientRegistry::instance()->removeClient(_uri);
 }
 
-SIOClient* SIOClient::connect(std::string uri) {
+sio_poco::SIOClient* 
+sio_poco::SIOClient::connect(std::string uri) {
 
 	//check if connection to endpoint exists 
 	URI tmp_uri(uri);
@@ -67,38 +70,45 @@ SIOClient* SIOClient::connect(std::string uri) {
 
 }
 
-void SIOClient::disconnect() {
+void 
+sio_poco::SIOClient::disconnect() {
 	_socket->disconnect(_endpoint);
 	delete this;
 }
 
-std::string SIOClient::getUri() {
+std::string 
+sio_poco::SIOClient::getUri() {
 
 	return _uri;
 
 }
 
-NotificationCenter* SIOClient::getNCenter() {
+NotificationCenter* 
+sio_poco::SIOClient::getNCenter() {
 	return _nCenter;
 }
 
-void SIOClient::on(const char *name, SIOEventTarget *target, callback c) {
+void 
+sio_poco::SIOClient::on(const char *name, SIOEventTarget *target, callback c) {
 	_registry->registerEvent(name, target, c);
 }
 
-void SIOClient::fireEvent(const char * name, Object::Ptr args) {
+void 
+sio_poco::SIOClient::fireEvent(const char * name, Object::Ptr args) {
 
 	_registry->fireEvent(this, name, args);
 
 }
 
-void SIOClient::send(std::string s) {
+void 
+sio_poco::SIOClient::send(std::string s) {
 
 	_socket->send(_endpoint, s);
 
 }
 
-void SIOClient::emit(std::string eventname, std::string args) {
+void 
+sio_poco::SIOClient::emit(std::string eventname, std::string args) {
 
 	_socket->emit(_endpoint, eventname, args);
 
