@@ -1,11 +1,12 @@
-#pragma once
+#ifndef SIOCLIENT_HPP_
+#define SIOCLIENT_HPP_
 
 #include "SIOClientImpl.h"
-
 #include "Poco/JSON/Object.h"
 
-using Poco::JSON::Object;
-
+namespace sio_poco
+{
+	
 class SIOClient
 {
 private:
@@ -16,7 +17,7 @@ private:
 	std::string _uri;
 	std::string _endpoint;
 
-	NotificationCenter* _nCenter;
+	Poco::NotificationCenter* _nCenter;
 
 	SIOEventRegistry *_registry;
 	SIONotificationHandler *_sioHandler; 
@@ -31,11 +32,14 @@ public:
 	void send(std::string s);
 	void emit(std::string eventname, std::string args);
 	std::string getUri();
-	NotificationCenter* getNCenter();
+	Poco::NotificationCenter* getNCenter();
 
-	typedef void (SIOEventTarget::*callback)(const void*, Object::Ptr&);
+	typedef void (SIOEventTarget::*callback)(const void*, Poco::JSON::Object::Ptr&);
 
 	void on(const char *name, SIOEventTarget *target, callback c);
 
-	void fireEvent(const char * name, Object::Ptr args);
+	void fireEvent(const char * name, Poco::JSON::Object::Ptr args);
 };
+}
+
+#endif

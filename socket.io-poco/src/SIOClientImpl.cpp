@@ -36,13 +36,14 @@ using Poco::TimerCallback;
 using Poco::Dynamic::Var;
 using Poco::Net::WebSocket;
 using Poco::URI;
+using Poco::Logger;
 
 
-SIOClientImpl::SIOClientImpl() {
+sio_poco::SIOClientImpl::SIOClientImpl() {
 	SIOClientImpl("localhost", 3000);
 }
 
-SIOClientImpl::SIOClientImpl(std::string host, int port) :
+sio_poco::SIOClientImpl::SIOClientImpl(std::string host, int port) :
 	_port(port),
 	_host(host),
 	_refCount(0)
@@ -54,7 +55,7 @@ SIOClientImpl::SIOClientImpl(std::string host, int port) :
 
 }
 
-SIOClientImpl::~SIOClientImpl(void) {
+sio_poco::SIOClientImpl::~SIOClientImpl(void) {
 	
 	_thread.join();
 
@@ -69,7 +70,8 @@ SIOClientImpl::~SIOClientImpl(void) {
 	SIOClientRegistry::instance()->removeSocket(_uri);
 }
 
-bool SIOClientImpl::init() {
+bool 
+sio_poco::SIOClientImpl::init() {
 	_logger = &(Logger::get("SIOClientLog"));
 
 	if(handshake()) 
@@ -83,7 +85,8 @@ bool SIOClientImpl::init() {
 
 }
 
-bool SIOClientImpl::handshake() {
+bool 
+sio_poco::SIOClientImpl::handshake() {
 	UInt16 aport = _port;
 	_session = new HTTPClientSession(_host, aport);
 
@@ -126,7 +129,8 @@ bool SIOClientImpl::handshake() {
 	return false;
 }
 
-bool SIOClientImpl::openSocket() {
+bool 
+sio_poco::SIOClientImpl::openSocket() {
 
 	UInt16 aport = _port;
 	HTTPRequest req(HTTPRequest::HTTP_GET,"/socket.io/1/websocket/"+_sid,HTTPMessage::HTTP_1_1);
@@ -167,7 +171,8 @@ bool SIOClientImpl::openSocket() {
 }
 
 
-SIOClientImpl* SIOClientImpl::connect(std::string host, int port) {
+sio_poco::SIOClientImpl* 
+sio_poco::SIOClientImpl::connect(std::string host, int port) {
 
 	SIOClientImpl *s = new SIOClientImpl(host, port);
 
@@ -180,7 +185,8 @@ SIOClientImpl* SIOClientImpl::connect(std::string host, int port) {
 	return NULL;
 }
 
-void SIOClientImpl::disconnect(std::string endpoint) {
+void 
+sio_poco::SIOClientImpl::disconnect(std::string endpoint) {
 	std::string s = "0::" + endpoint;
 
 	if(endpoint == "") {
@@ -193,7 +199,8 @@ void SIOClientImpl::disconnect(std::string endpoint) {
 	_ws->sendFrame(s.data(), s.size());
 }
 
-void SIOClientImpl::connectToEndpoint(std::string endpoint) {
+void 
+sio_poco::SIOClientImpl::connectToEndpoint(std::string endpoint) {
 
 	std::string s = "1::" + endpoint;	
 
@@ -201,7 +208,8 @@ void SIOClientImpl::connectToEndpoint(std::string endpoint) {
 
 }
 
-void SIOClientImpl::heartbeat(Poco::Timer& timer) {
+void 
+sio_poco::SIOClientImpl::heartbeat(Poco::Timer& timer) {
 	_logger->information("heartbeat called\n");
 
 	std::string s = "2::";
@@ -210,13 +218,15 @@ void SIOClientImpl::heartbeat(Poco::Timer& timer) {
 
 }
 
-void SIOClientImpl::run() {
+void 
+sio_poco::SIOClientImpl::run() {
 
 	monitor();
 
 }
  
-void SIOClientImpl::monitor() {
+void 
+sio_poco::SIOClientImpl::monitor() {
 	do 
 	{
 		receive();
@@ -224,7 +234,8 @@ void SIOClientImpl::monitor() {
 	} while (_connected);
 }
 
-void SIOClientImpl::send(std::string endpoint, std::string s) {
+void 
+sio_poco::SIOClientImpl::send(std::string endpoint, std::string s) {
 	_logger->information("sending message\n");
 
 	std::stringstream pre;
@@ -237,7 +248,8 @@ void SIOClientImpl::send(std::string endpoint, std::string s) {
 
 }
 
-void SIOClientImpl::emit(std::string endpoint, std::string eventname, std::string args) {
+void 
+sio_poco::SIOClientImpl::emit(std::string endpoint, std::string eventname, std::string args) {
 	_logger->information("emitting event\n");
 
 	std::stringstream pre;
@@ -252,7 +264,8 @@ void SIOClientImpl::emit(std::string endpoint, std::string eventname, std::strin
 
 }
 
-bool SIOClientImpl::receive() {
+bool 
+sio_poco::SIOClientImpl::receive() {
 
 	char buffer[1024];
 	int flags;
@@ -275,7 +288,7 @@ bool SIOClientImpl::receive() {
 	std::string uri = _uri;
 	uri += endpoint;
 
-	SIOClient *c = SIOClientRegistry::instance()->getClient(uri);
+	sio_poco::SIOClient *c = SIOClientRegistry::instance()->getClient(uri);
 
 	std::string payload = "";
 
@@ -325,10 +338,12 @@ bool SIOClientImpl::receive() {
 
 }
 
-void SIOClientImpl::addref() {
+void 
+sio_poco::SIOClientImpl::addref() {
 	_refCount++;
 }
 
-void SIOClientImpl::release() {
+void 
+sio_poco::SIOClientImpl::release() {
 	if(--_refCount == 0) delete this;
 }

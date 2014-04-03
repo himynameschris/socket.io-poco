@@ -1,8 +1,10 @@
-#pragma once
+#ifndef SIOEVENTTARGET_HPP_
+#define SIOEVENTTARGET_HPP_
 
 #include "Poco/JSON/Object.h"
 
-using Poco::JSON::Object;
+namespace sio_poco
+{
 
 class SIOEventTarget
 {
@@ -13,3 +15,5 @@ public:
 	
 	
 };
+}
+#endif

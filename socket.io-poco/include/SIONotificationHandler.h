@@ -1,28 +1,32 @@
-#pragma once
+#ifndef SIONOTIFICATIONHANDLER_HPP_
+#define SIONOTIFICATIONHANDLER_HPP_
+
 #include "Poco/NotificationCenter.h"
 #include "SIONotifications.h"
 #include "Poco/Logger.h"
 
-using Poco::NotificationCenter;
-using Poco::Logger;
+namespace sio_poco
+{
 
 class SIONotificationHandler
 {
 public:
 	SIONotificationHandler(void);
-	SIONotificationHandler(NotificationCenter* nc);
+	SIONotificationHandler(Poco::NotificationCenter* nc);
 	~SIONotificationHandler(void);
 
 	void handleMessage(SIOMessage* pNf);
 	void handleJSONMessage(SIOJSONMessage* pNf);
 	void handleEvent(SIOEvent* pNf);
 
-	void registerCallbacks(NotificationCenter* nc);
+	void registerCallbacks(Poco::NotificationCenter* nc);
 
-	NotificationCenter* _nCenter;
+	Poco::NotificationCenter* _nCenter;
 
-	Logger *_logger;
+	Poco::Logger *_logger;
 
-	void setNCenter(NotificationCenter* nc);
+	void setNCenter(Poco::NotificationCenter* nc);
 };
+}
 
+#endif

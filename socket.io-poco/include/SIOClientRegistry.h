@@ -1,7 +1,11 @@
-#pragma once
+#ifndef SIOCLIENTREGISTRY_HPP_
+#define SIOCLIENTREGISTRY_HPP_
 
 #include <map>
 #include <string>
+
+namespace sio_poco
+{
 
 class SIOClient;
 class SIOClientImpl;
@@ -29,4 +33,5 @@ public:
 	void removeSocket(std::string uri);
 	
 };
-
+}
+#endif

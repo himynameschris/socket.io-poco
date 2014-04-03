@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SIOCLIENTIMPL_HPP_
+#define SIOCLIENTIMPL_HPP_
 
 #include <string>
 
@@ -18,18 +19,8 @@
 #include "SIOEventTarget.h"
 
 
-using Poco::JSON::Object;
-
-using Poco::Net::HTTPClientSession;
-using Poco::Net::WebSocket;
-using Poco::Logger;
-using Poco::Timer;
-using Poco::TimerCallback;
-using Poco::NotificationCenter;
-using Poco::Thread;
-using Poco::ThreadTarget;
-
-
+namespace sio_poco
+{
 class SIOClientImpl: public Poco::Runnable
 {
 private:
@@ -46,11 +37,11 @@ private:
 	bool _connected;
 	
 
-	HTTPClientSession *_session;
-	WebSocket *_ws;
-	Timer *_heartbeatTimer;
-	Logger *_logger;
-	Thread _thread;
+	Poco::Net::HTTPClientSession *_session;
+	Poco::Net::WebSocket *_ws;
+	Poco::Timer *_heartbeatTimer;
+	Poco::Logger *_logger;
+	Poco::Thread _thread;
 
 	int _refCount;
 	
@@ -78,3 +69,6 @@ public:
 
 	std::string getUri();
 };
+}
+
+#endif
