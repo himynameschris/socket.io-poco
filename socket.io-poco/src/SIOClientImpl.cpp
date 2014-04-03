@@ -39,14 +39,16 @@ using Poco::URI;
 using Poco::Logger;
 
 
-sio_poco::SIOClientImpl::SIOClientImpl() {
+sio_poco::SIOClientImpl::SIOClientImpl() : _buffer(NULL), _buffer_size(0) {
 	SIOClientImpl("localhost", 3000);
 }
 
 sio_poco::SIOClientImpl::SIOClientImpl(std::string host, int port) :
 	_port(port),
 	_host(host),
-	_refCount(0)
+	_refCount(0),
+	_buffer(NULL), 
+	_buffer_size(0)
 {
 	std::stringstream s;
 	s << host << ":" << port;
@@ -68,6 +70,13 @@ sio_poco::SIOClientImpl::~SIOClientImpl(void) {
 	delete(_session);
 
 	SIOClientRegistry::instance()->removeSocket(_uri);
+	
+	if(_buffer)
+	{
+		delete[] _buffer;
+		_buffer = NULL;
+		_buffer_size = 0;
+	}
 }
 
 bool 
@@ -267,21 +276,29 @@ sio_poco::SIOClientImpl::emit(std::string endpoint, std::string eventname, std::
 bool 
 sio_poco::SIOClientImpl::receive() {
 
-	char buffer[1024];
+	if(!_buffer)
+	{
+		int rcv_size = _ws->getReceiveBufferSize();
+		_buffer = new char[rcv_size];
+		_buffer_size = rcv_size;
+	}
+	
+	//_logger->information("receive buffer size: %d ",rcv_size);
+
 	int flags;
 	int n;
 
-	n = _ws->receiveFrame(buffer, sizeof(buffer), flags);
+	n = _ws->receiveFrame(_buffer, _buffer_size, flags);
 	_logger->information("bytes received: %d ",n);
 
 	std::stringstream s;
 	for(int i = 0; i < n; i++) {
-		s << buffer[i];
+		s << _buffer[i];
 	}
 
 	_logger->information("buffer received: \"%s\"\n",s.str());
 
-	int control = atoi(&buffer[0]);
+	int control = atoi(&_buffer[0]);
 	StringTokenizer st(s.str(), ":");
 	std::string endpoint = st[2];
 
