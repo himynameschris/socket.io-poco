@@ -9,7 +9,7 @@ TestTarget::TestTarget()
 	
 }
 
-void TestTarget::onUpdate(const void* pSender, Object::Ptr& arg)
+void TestTarget::onUpdate(const void* pSender, Array::Ptr& arg)
 {
 	Logger *logger = &(Logger::get("SIOClientLog"));
 
@@ -17,7 +17,7 @@ void TestTarget::onUpdate(const void* pSender, Object::Ptr& arg)
 
 }
 
-void TestTarget::ontestevent(const void* pSender, Object::Ptr& arg)
+void TestTarget::ontestevent(const void* pSender, Array::Ptr& arg)
 {
 	Logger *logger = &(Logger::get("SIOClientLog"));
 

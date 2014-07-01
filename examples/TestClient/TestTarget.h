@@ -8,7 +8,7 @@ public:
 	TestTarget();
 	~TestTarget() {};
 
-	void onUpdate(const void* pSender, Object::Ptr& arg);
-	void ontestevent(const void* pSender, Object::Ptr& arg);
+	void onUpdate(const void* pSender, Array::Ptr& arg);
+	void ontestevent(const void* pSender, Array::Ptr& arg);
 
 };

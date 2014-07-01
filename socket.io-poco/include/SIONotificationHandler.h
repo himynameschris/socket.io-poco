@@ -13,8 +13,8 @@ public:
 	SIONotificationHandler(NotificationCenter* nc);
 	~SIONotificationHandler(void);
 
-	void handleMessage(SIOMessage* pNf);
-	void handleJSONMessage(SIOJSONMessage* pNf);
+//	void handleMessage(SIOMessage* pNf);
+//	void handleJSONMessage(SIOJSONMessage* pNf);
 	void handleEvent(SIOEvent* pNf);
 
 	void registerCallbacks(NotificationCenter* nc);

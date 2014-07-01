@@ -1,8 +1,9 @@
-#pragma once
+#ifndef SIO_EventTarget_INCLUDED
+#define SIO_EventTarget_INCLUDED
 
-#include "Poco/JSON/Object.h"
+#include "Poco/JSON/Array.h"
 
-using Poco::JSON::Object;
+using Poco::JSON::Array;
 
 class SIOEventTarget
 {
@@ -10,6 +11,5 @@ private:
 	
 public:
 	virtual ~SIOEventTarget() {};
-	
-	
 };
+#endif

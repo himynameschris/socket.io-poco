@@ -12,42 +12,40 @@ SIOClientRegistry *SIOClientRegistry::instance() {
 
 }
 
-SIOClient *SIOClientRegistry::getClient(std::string uri) {
-
+SIOClient *SIOClientRegistry::getClient(std::string uri)
+{
 	SIOClient *c = NULL;
-
+//	std::cout << "Search client:" << uri << std::endl;
 	std::map<std::string,SIOClient *>::iterator it = _clientMap.find(uri);
 	if(it != _clientMap.end())
     {
-		
 		 c = it->second;
-
     }
-
 	return c;
 
 }
 
-void SIOClientRegistry::addClient(SIOClient *client) {
-
+void SIOClientRegistry::addClient(SIOClient *client)
+{
+//	std::cout << "Add client:" << client->getUri() << std::endl;
 	_clientMap[client->getUri()] = client;
 
 }
 
-void SIOClientRegistry::removeClient(std::string uri) {
+void SIOClientRegistry::removeClient(std::string uri)
+{
 	_clientMap.erase(uri);
 }
 
-SIOClientImpl *SIOClientRegistry::getSocket(std::string uri) {
+SIOClientImpl *SIOClientRegistry::getSocket(std::string uri)
+{
 
 	SIOClientImpl *c = NULL;
-
+//	std::cout << "Search client:" << uri << std::endl;
 	std::map<std::string,SIOClientImpl *>::iterator it = _socketMap.find(uri);
 	if(it != _socketMap.end())
     {
-		
 		 c = it->second;
-
     }
 
 	return c;

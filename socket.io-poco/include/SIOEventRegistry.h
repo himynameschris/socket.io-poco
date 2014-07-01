@@ -8,11 +8,11 @@
 #include "Poco/BasicEvent.h"
 #include "Poco/Delegate.h"
 
-using Poco::JSON::Object;
+using Poco::JSON::Array;
 using Poco::BasicEvent;
 using Poco::Delegate;
 
-typedef void (SIOEventTarget::*callback)(const void*, Object::Ptr&);
+typedef void (SIOEventTarget::*callback)(const void*, Array::Ptr&);
 
 class SIOClient;
 
@@ -24,9 +24,9 @@ public:
 
 	//static SIOEventRegistry *sharedInstance();
 	bool registerEvent(const char *name, SIOEventTarget *target, callback c);
-	void fireEvent(SIOClient *client, const char *name, Object::Ptr data);
+	void fireEvent(SIOClient *client, const char *name, Array::Ptr data);
 
 private:
 
-	std::map<std::string, BasicEvent< Object::Ptr > *> mEventMap; //!< the map containing event names and handlers
+	std::map<std::string, BasicEvent< Array::Ptr > *> mEventMap; //!< the map containing event names and handlers
 };

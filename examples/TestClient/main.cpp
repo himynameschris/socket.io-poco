@@ -1,5 +1,32 @@
 // main.cpp : Defines the entry point for the console application.
-#include "Poco/WindowsConsoleChannel.h"
+#ifdef _WIN64
+   //define something for Windows (64-bit)
+	#include "Poco/WindowsConsoleChannel.h"
+#elif _WIN32
+   //define something for Windows (32-bit)
+	#include "Poco/WindowsConsoleChannel.h"
+#elif __APPLE__
+    #if TARGET_IPHONE_SIMULATOR
+         // iOS Simulator
+    #elif TARGET_OS_IPHONE
+        // iOS device
+    #elif TARGET_OS_MAC
+        // Other kinds of Mac OS
+    #else
+        // Unsupported platform
+    #endif
+#elif __linux
+    // linux
+	#include "Poco/ConsoleChannel.h"
+#elif __unix // all unices not caught above
+    // Unix
+	#include "Poco/ConsoleChannel.h"
+#elif __posix
+    // POSIX
+	#include "Poco/ConsoleChannel.h"
+#endif
+
+
 #include "Poco/Thread.h"
 
 #include "SIOClient.h"
@@ -8,7 +35,6 @@
 
 #include <iostream>
 
-using Poco::WindowsConsoleChannel;
 using Poco::Thread;
 
 int main(int argc, char* argv[])
@@ -16,7 +42,34 @@ int main(int argc, char* argv[])
 	//create a c++ Poco logger to use and set its channel to the windows console
 	//this is the same logger instance that the library will hook into
 	Logger *logger = &(Logger::get("SIOClientLog"));
-	logger->setChannel(new WindowsConsoleChannel());
+
+#ifdef _WIN64
+   //define something for Windows (64-bit)
+	logger->setChannel(new Poco::WindowsConsoleChannel());
+#elif _WIN32
+   //define something for Windows (32-bit)
+	logger->setChannel(new Poco::WindowsConsoleChannel());
+#elif __APPLE__
+    #if TARGET_IPHONE_SIMULATOR
+         // iOS Simulator
+    #elif TARGET_OS_IPHONE
+        // iOS device
+    #elif TARGET_OS_MAC
+        // Other kinds of Mac OS
+    #else
+        // Unsupported platform
+    #endif
+#elif __linux
+    // linux
+	logger->setChannel(new Poco::ConsoleChannel());
+#elif __unix // all unices not caught above
+    // Unix
+	logger->setChannel(new Poco::ConsoleChannel());
+#elif __posix
+    // POSIX
+	logger->setChannel(new Poco::ConsoleChannel());
+#endif
+
 	
 	//Establish the socket.io connection
 	//JS: var socket = io.connect("localhost:3000")

@@ -1,12 +1,13 @@
 #pragma once
 
 #include "SIOEventTarget.h"
+#include "Poco/Exception.h"
 
-class TestEndpointTarget : public SIOEventTarget
+class TestTarget : public SIOEventTarget
 {
 public:
-	TestEndpointTarget();
-	~TestEndpointTarget() {};
+	TestTarget();
+	~TestTarget() {};
 
 	void onUpdate(const void* pSender, Array::Ptr& arg);
 	void ontestevent(const void* pSender, Array::Ptr& arg);

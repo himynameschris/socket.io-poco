@@ -1,4 +1,5 @@
-#pragma once
+#ifndef SIO_ClientImpl_DEFINED
+#define SIO_ClientImpl_DEFINED
 
 #include <string>
 
@@ -10,15 +11,14 @@
 #include "Poco/Thread.h"
 #include "Poco/ThreadTarget.h"
 #include "Poco/RunnableAdapter.h"
+#include "Poco/URI.h"
 
 #include "Poco/JSON/Parser.h"
 
 #include "SIONotificationHandler.h"
 #include "SIOEventRegistry.h"
 #include "SIOEventTarget.h"
-
-
-using Poco::JSON::Object;
+#include "SIOPacket.h"
 
 using Poco::Net::HTTPClientSession;
 using Poco::Net::WebSocket;
@@ -32,9 +32,32 @@ using Poco::ThreadTarget;
 
 class SIOClientImpl: public Poco::Runnable
 {
+public:
+	bool handshake();
+	bool openSocket();
+	bool init();
+
+	void release();
+	void addref();
+
+	static SIOClientImpl* connect(Poco::URI uri);
+	void disconnect(std::string endpoint);
+	void connectToEndpoint(std::string endpoint);
+	void monitor();
+	virtual void run();
+	void heartbeat(Poco::Timer& timer);
+	bool receive();
+	void send(std::string endpoint, std::string s);
+	void send(SocketIOPacket *packet);
+	void emit(std::string endpoint, std::string eventname, std::string args);
+
+	std::string getUri();
+
 private:
+
+
 	SIOClientImpl();
-	SIOClientImpl(std::string host, int port);
+	SIOClientImpl(Poco::URI uri);
 	~SIOClientImpl(void);
 	
 	std::string _sid;
@@ -42,9 +65,9 @@ private:
 	int _timeout;
 	std::string _host;
 	int _port;
-	std::string _uri;
+	Poco::URI _uri;
 	bool _connected;
-	
+	SocketIOPacket::SocketIOVersion _version;
 
 	HTTPClientSession *_session;
 	WebSocket *_ws;
@@ -56,25 +79,6 @@ private:
 	
 	//SIOEventRegistry* _registry;
 	//SIONotificationHandler *_sioHandler;
-
-public:
-
-	bool handshake();
-	bool openSocket();
-	bool init();
-
-	void release();
-	void addref();	
-	
-	static SIOClientImpl* connect(std::string host, int port);
-	void disconnect(std::string endpoint);
-	void connectToEndpoint(std::string endpoint);
-	void monitor();
-	virtual void run();
-	void heartbeat(Poco::Timer& timer);
-	bool receive();
-	void send(std::string endpoint, std::string s);
-	void emit(std::string endpoint, std::string eventname, std::string args);
-
-	std::string getUri();
 };
+
+#endif

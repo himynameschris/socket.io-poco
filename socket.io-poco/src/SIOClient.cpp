@@ -34,8 +34,8 @@ SIOClient* SIOClient::connect(std::string uri) {
 	std::string fullpath = ss.str();
 	SIOClient *c = SIOClientRegistry::instance()->getClient(fullpath);
 
-	if(!c) {
-
+	if(!c)
+	{
 		//check if connection to socket already exists
 		ss.str("");
 		ss.clear();
@@ -43,9 +43,9 @@ SIOClient* SIOClient::connect(std::string uri) {
 		std::string spath = ss.str();
 		SIOClientImpl *impl = SIOClientRegistry::instance()->getSocket(spath);
 
-		if(!impl) {
-
-			impl = SIOClientImpl::connect(tmp_uri.getHost(), tmp_uri.getPort());
+		if(!impl)
+		{
+			impl = SIOClientImpl::connect(tmp_uri);
 
 			if (!impl) return NULL; //connect failed
 
@@ -72,34 +72,32 @@ void SIOClient::disconnect() {
 	delete this;
 }
 
-std::string SIOClient::getUri() {
-
+std::string SIOClient::getUri()
+{
 	return _uri;
-
 }
 
-NotificationCenter* SIOClient::getNCenter() {
+NotificationCenter* SIOClient::getNCenter()
+{
 	return _nCenter;
 }
 
-void SIOClient::on(const char *name, SIOEventTarget *target, callback c) {
+void SIOClient::on(const char *name, SIOEventTarget *target, callback c)
+{
 	_registry->registerEvent(name, target, c);
 }
 
-void SIOClient::fireEvent(const char * name, Object::Ptr args) {
-
+void SIOClient::fireEvent(const char * name, Array::Ptr args)
+{
 	_registry->fireEvent(this, name, args);
-
 }
 
-void SIOClient::send(std::string s) {
-
+void SIOClient::send(std::string s)
+{
 	_socket->send(_endpoint, s);
-
 }
 
-void SIOClient::emit(std::string eventname, std::string args) {
-
+void SIOClient::emit(std::string eventname, std::string args)
+{
 	_socket->emit(_endpoint, eventname, args);
-
 }
