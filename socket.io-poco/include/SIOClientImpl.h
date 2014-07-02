@@ -76,6 +76,8 @@ private:
 	Thread _thread;
 
 	int _refCount;
+	char *_buffer;
+	std::size_t _buffer_size;
 	
 	//SIOEventRegistry* _registry;
 	//SIONotificationHandler *_sioHandler;

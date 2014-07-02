@@ -53,6 +53,8 @@ SIOClientImpl::SIOClientImpl()
 }
 
 SIOClientImpl::SIOClientImpl(URI uri) :
+	_buffer(NULL),
+	_buffer_size(0),
 	_port(uri.getPort()),
 	_host(uri.getHost()),
 	_refCount(0)
@@ -73,6 +75,12 @@ SIOClientImpl::~SIOClientImpl(void)
 
 	delete(_heartbeatTimer);
 	delete(_session);
+	if(_buffer)
+	{
+		delete[] _buffer;
+		_buffer = NULL;
+		_buffer_size = 0;
+	}
 
 	std::stringstream ss;
 	ss << _uri.getHost() << ":" << _uri.getPort() << _uri.getPath();
@@ -359,18 +367,23 @@ void SIOClientImpl::send(SocketIOPacket *packet)
 
 bool SIOClientImpl::receive()
 {
-	char buffer[20000];
+	if(!_buffer)
+	 {
+	 	int rcv_size = _ws->getReceiveBufferSize();
+	 	_buffer = new char[rcv_size];
+	 	_buffer_size = rcv_size;
+	 }
 	int flags;
 	int n;
 
-	n = _ws->receiveFrame(buffer, sizeof(buffer), flags);
+	n = _ws->receiveFrame(_buffer, _buffer_size, flags);
 	_logger->information("I received something...bytes received: %d ",n);
 
 	SocketIOPacket *packetOut;
 
 	std::stringstream s;
 	for(int i = 0; i < n; i++) {
-		s << buffer[i];
+		s << _buffer[i];
 	}
 	SIOClient *c;
 	std::stringstream suri;
