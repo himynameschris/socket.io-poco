@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
 {
 	//create a c++ Poco logger to use and set its channel to the windows console
 	//this is the same logger instance that the library will hook into
-	Logger *logger = &(Logger::get("SIOClientLog"));
+	Logger *logger = &(Logger::get("example"));
 
 #ifdef _WIN64
    //define something for Windows (64-bit)
@@ -78,27 +78,31 @@ int main(int argc, char* argv[])
 	//Create a target and register object its method onUpdate for the Update event
 	//JS: socket.on("Update", function(data) {...});
 	TestTarget *target = new TestTarget();
-	sio->on("Update", target, callback(&TestTarget::onUpdate));
+	sio->on("message", target, callback(&TestTarget::onMessage));
 	
 	//setup is now complete, messages and events can be send and received
-	logger->information("sio setup complete\n");
+	logger->information("Socket.io client setup complete\n");
 
 	//test the message sending
-	logger->information("sending message\n");
-	sio->send("Hello Socket.IO");
+	logger->information("Sending message string");
+	sio->send("Message - String");
+  logger->information("Sending message json\n");
+	sio->send("{\"name\":\"myname\",\"type\":\"mytype\"}");
 
 	//test the event emitter, this will return the same event so let's register a callback too
-	sio->on("testevent", target, callback(&TestTarget::ontestevent));
-	logger->information("emitting test event\n");
-	sio->emit("testevent", "[{\"name\":\"myname\",\"type\":\"mytype\"}]");
+	sio->on("chat", target, callback(&TestTarget::onEvent));
+  logger->information("Emit \"chat\" event with string");
+	sio->emit("chat","Event - String");
+  logger->information("Emit \"chat\" event with json");
+	sio->emit("chat", "[{\"name\":\"myname\",\"type\":\"mytype\"}]");
 	
 	//test connecting to an endpoint 'testpoint'
-	TestEndpointTarget *target2 = new TestEndpointTarget();
-	SIOClient *testpoint = SIOClient::connect("http://localhost:3000/testpoint");
-	testpoint->send("Hello Socket.IO Testpoint");
-	testpoint->on("Update", target2, callback(&TestEndpointTarget::onUpdate));
-	testpoint->on("testevent", target2, callback(&TestEndpointTarget::ontestevent));
-	testpoint->emit("testevent", "[{\"name\":\"myname\",\"type\":\"mytype\"}]");
+	//~ TestEndpointTarget *target2 = new TestEndpointTarget();
+	//~ SIOClient *testpoint = SIOClient::connect("http://localhost:3000/testpoint");
+	//~ testpoint->send("Hello Socket.IO Testpoint");
+	//~ testpoint->on("Update", target2, callback(&TestEndpointTarget::onUpdate));
+	//~ testpoint->on("testevent", target2, callback(&TestEndpointTarget::ontestevent));
+	//~ testpoint->emit("testevent", "[{\"name\":\"myname\",\"type\":\"mytype\"}]");
 
 	//wait for user input to move to next section of code
 	//socket receiving occurs in another thread and will not be halted
@@ -106,7 +110,7 @@ int main(int argc, char* argv[])
 	std::cin.get();
 
 	//test disconnecting a single endpoint, other endpoints stay connected
-	testpoint->disconnect();
+	//~ testpoint->disconnect();
 
 	//disconnecting the default socket with no endpoint will also disconnect all endpoints
 	sio->disconnect();

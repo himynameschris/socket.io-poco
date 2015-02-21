@@ -1,0 +1,25 @@
+{
+  "name": "socket.io-poco_example",
+  "description": "socket.io cpp example",
+  "version": "0.0.1",
+  "author": {
+    "name": "Francois Regnoult",
+    "email": "regnoultf@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/IVBakker/socket.io-poco"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "socket.io": "*",
+    "http":"*",
+    "express":"*"
+  }, 
+  "engines": {
+    "node": "0.10.26",
+    "npm": "1.4.6"
+  }
+}

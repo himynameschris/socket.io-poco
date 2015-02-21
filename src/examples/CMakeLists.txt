@@ -1,13 +1,11 @@
-cmake_minimum_required(VERSION 2.8.9)
 
-project(SOCKETIOPOCOEXAMPLE)
+
 set(CMAKE_BUILD_TYPE Debug)
 
-
 set(source_files
-	TestClient/main.cpp
-	TestClient/TestEndpointTarget.cpp
-	TestClient/TestTarget.cpp
+	main.cpp
+	TestEndpointTarget.cpp
+	TestTarget.cpp
 )
 include_directories(${INCLUDE_SOCKETIOPOCO})
 

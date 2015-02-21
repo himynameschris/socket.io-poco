@@ -30,7 +30,6 @@ _ReSharper*/
 
 # Ignore files build by ndk and eclipse
 libs/
-bin/
 obj/
 gen/
 assets/
@@ -53,7 +52,6 @@ build_*_xcode/
 *.xcworkspacedata
 *.xcuserstate
 xcschememanagement.plist
-build/
 .DS_Store
 xcuserdata/
 
@@ -76,3 +74,7 @@ tests/proj.android/.settings/*
 tests/proj.android/gen/*
 
 ipch/
+
+src/examples/node_modules
+third_party/*
+!third_party/installDependancies.sh

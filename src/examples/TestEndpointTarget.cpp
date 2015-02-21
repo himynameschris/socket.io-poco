@@ -11,16 +11,10 @@ TestEndpointTarget::TestEndpointTarget()
 
 void TestEndpointTarget::onUpdate(const void* pSender, Array::Ptr& arg)
 {
-	Logger *logger = &(Logger::get("SIOClientLog"));
-
-	logger->information("TestEndpointTarget onUpdate!");
-
+	Logger::get("example").information("TestEndpointTarget onUpdate!");
 }
 
 void TestEndpointTarget::ontestevent(const void* pSender, Array::Ptr& arg)
 {
-	Logger *logger = &(Logger::get("SIOClientLog"));
-
-	logger->information("TestEndpointTarget ontestevent!");
-
+	Logger::get("example").information("TestEndpointTarget ontestevent!");
 }
