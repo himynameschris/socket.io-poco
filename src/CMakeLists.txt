@@ -19,8 +19,19 @@ file(GLOB SIOPOCO_SOURCES *.cpp)
 include_directories("${MAINFOLDER}/../include" /usr/local/include "${THIRD_PARTY_INCLUDE}")
 
 link_directories(/usr/local/lib "${THIRD_PARTY_LIB}")
-add_library(socketiopoco SHARED ${SIOPOCO_SOURCES})
-target_link_libraries(socketiopoco PocoFoundation PocoJSON PocoNet PocoNetSSL)
+add_library(socketiopoco_static STATIC ${SIOPOCO_SOURCES})
+add_library(socketiopoco_shared SHARED ${SIOPOCO_SOURCES})
+target_link_libraries(socketiopoco_static PocoFoundation PocoJSON PocoNet PocoNetSSL)
+target_link_libraries(socketiopoco_shared PocoFoundation PocoJSON PocoNet PocoNetSSL)
+
+install(TARGETS socketiopoco_static DESTINATION lib)
+install(TARGETS socketiopoco_shared DESTINATION lib)
+install(
+    DIRECTORY ${MAINFOLDER}/../include
+    DESTINATION .
+    COMPONENT Devel
+    PATTERN ".svn" EXCLUDE
+    )
 
 
 option (COMPILE_EXAMPLES "COMPILE_EXAMPLES" OFF)
