@@ -77,4 +77,4 @@ ipch/
 
 src/examples/node_modules
 third_party/*
-!third_party/installDependancies.sh
+!third_party/installDependencies.sh
