@@ -3,38 +3,67 @@
 
 # **#info** #
 
-## Currently Supports: ##
+####Currently Supports:
 
 - the Websocket transport
 - asynchronous messaging and mvents
 - event callbacks
 - JS Socket.IO style methods
-- cross platform build tools (win32, android)
-- endpoints (added 6/6/2013)
+- cross platform build tools (cmake)
+- endpoints
 
-## Planned: ##
+####Contributors:
 
-- JS-Bindings for use with cocos2dx
+Thanks to all who have spent time fixing issues or implementing features:
 
-## Dependencies: ##
+bug fixes:
 
-- POCO C++ Foundation, Net and JSON libraries
+- https://github.com/pilwon
+- https://github.com/geniuslinchao
+
+feature implementation:
+
+- https://github.com/cpowell
+- https://github.com/francoisTemasys or https://github.com/IVBakker
+
 
 # **#include** #
 
-## Win32: ##
+## Dependencies: ##
 
-The socket.io-poco library will look for the Poco libraries in the same directory as the socket.io-poco repo, for example:
+- POCO C++ Foundation, Net, NetSSL and JSON libraries
+	- see install script in third_party folder
+- OpenSSL
+	- this is required by the Poco NetSSL library and HTTPS support 
 
+# **#building** #
 
-> .\myprojectdir\
-> .\myprojectdir\lib\socket.io-poco\
-> .\myprojectdir\lib\poco\
-> .\myprojectdir\myproject\
+## CMake: ##
 
-If you do not follow this scheme, then simply update the socket.io project include directories with the location of your Poco libraries
+####Building Poco
+```
+cd third_party
+./installDependencies.sh
+```
+
+Under Windows, you will need to open the main Poco solution, build the ALL project, and then build the INSTALL project.
+
+Once ran or if using Linux, your poco libraries and headers will be in the third_party/local/bin, include and lib folders. 
+
+####Building socket.io-poco
+```
+cd build
+cmake ..
+make
+```
+
+To build with examples, use ```cmake -DCOMPILE_EXAMPLES=ON ..``` above instead of ```cmake ...```
+
+Under Windows, again you will need to open the Project solution and build the ALL project and the INSTALL project. You may also need to manually copy the poco shared libraries from third_party/local into the same folder as the executable to make it run until the INSTALL path is updated
 
 ## Android: ##
+
+(cmake support for Android needs to be updated)
 
 In your NDK makefile, add the path to the Android.mk file in the repo's source folder and add the following lib your app's static library includes
 
@@ -43,18 +72,6 @@ In your NDK makefile, add the path to the Android.mk file in the repo's source f
 You will also need to include the paths and modules for the Poco libraries, the android makefiles can be found in the android folder of the socket.io repo (add them to the Foundation, JSON and Net include folders)
 
 `LOCAL_WHOLE_STATIC_LIBRARIES += pocofoundation_static poconet_static pocojson_static socketiopoco_static`
-
-## CMake: ##
-
-```
-cd [socket.io-poco root directory]/socket.io-poco # careful here, I mean the INNER socket.io-poco directory
-mkdir build
-cd build
-cmake ..
-make
-```
-
-Now you have a "libsocketiopoco" shared library in ./src that you can copy where you wish, and link against in your application.
 
 # **#using** #
 
@@ -70,7 +87,9 @@ Simply use the send method and pass the message string
 
 **To use events:**
 
-1) Create your own subclass of SIOEventTarget 2) Create methods to handle the callbacks, an event callback function signature must match this pattern:
+1) Create your own subclass of SIOEventTarget 
+
+2) Create methods to handle the callbacks, an event callback function signature must match this pattern:
 
 `void MyClass::onUpdate(const void* pSender, Object::Ptr& arg)`
 
@@ -82,7 +101,7 @@ Note: callback() is a custom typedef used by the socket.io-poco library, defined
 
 `typedef void (SIOEventTarget::*callback)(const void*, Object::Ptr&);`
 
-Lastly, to fire an event use the emit method, passing the event name and data both as strings:
+4) Lastly, to fire an event use the emit method, passing the event name and data both as strings:
 
 `testpoint->emit("testevent", "[{\"name\":\"myname\",\"type\":\"mytype\"}]");`
 
