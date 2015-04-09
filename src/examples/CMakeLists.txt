@@ -10,6 +10,6 @@ set(source_files
 include_directories(${INCLUDE_SOCKETIOPOCO})
 
 add_executable(socketiopoco_example ${source_files})
-target_link_libraries(socketiopoco_example socketiopoco)
+target_link_libraries(socketiopoco_example socketiopoco_shared)
 
 install (TARGETS socketiopoco_example DESTINATION bin)
