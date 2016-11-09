@@ -100,6 +100,12 @@ void SocketIOPacket::addData(std::string data)
 	this->_args.add(data);
 }
 
+void SocketIOPacket::addData(Poco::JSON::Object::Ptr data)
+{
+  this->_args.add(data);
+
+} //void SocketIOPacket::addData(Poco::JSON::Object::Ptr data)
+
 void SocketIOPacket::addData(Poco::JSON::Array::Ptr data)
 {
 	for(int i = 0 ; i<data->size();++i)

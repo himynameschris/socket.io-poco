@@ -50,6 +50,7 @@ public:
 	void send(std::string endpoint, std::string s);
 	void send(SocketIOPacket *packet);
 	void emit(std::string endpoint, std::string eventname, std::string args);
+  void emit(std::string endpoint, std::string eventname, Poco::JSON::Object::Ptr args);
 
 	std::string getUri();
 

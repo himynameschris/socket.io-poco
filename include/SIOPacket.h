@@ -35,7 +35,8 @@ public:
 
 	void addData(std::string data);
 	void addData(Poco::JSON::Array::Ptr data);
-	Poco::JSON::Array getDatas(){return _args;};
+  void addData(Poco::JSON::Object::Ptr data);
+  Poco::JSON::Array getDatas(){return _args;};
 	virtual std::string stringify();
 
 	static SocketIOPacket * createPacketWithType(std::string type, SocketIOPacket::SocketIOVersion version);

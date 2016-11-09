@@ -78,3 +78,6 @@ ipch/
 src/examples/node_modules
 third_party/*
 !third_party/installDependencies.sh
+
+# Ignore files created by qt-creator
+CMakeLists.txt.user

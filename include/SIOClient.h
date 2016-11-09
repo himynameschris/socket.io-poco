@@ -31,7 +31,8 @@ public:
 	void disconnect();
 	void send(std::string s);
 	void emit(std::string eventname, std::string args);
-	std::string getUri();
+  void emit(std::string eventname, Poco::JSON::Object::Ptr args);
+  std::string getUri();
 	Poco::NotificationCenter* getNCenter();
 
 	typedef void (SIOEventTarget::*callback)(const void*, Array::Ptr&);
