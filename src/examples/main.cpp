@@ -74,6 +74,10 @@ int main(int argc, char* argv[])
 	//Establish the socket.io connection
 	//JS: var socket = io.connect("localhost:3000")
 	SIOClient *sio = SIOClient::connect("http://localhost:3000");
+    if (sio == NULL) {
+        logger->information("Socket.io client connect failed sio:%p\n", sio);
+        return -1;
+    }
 
 	//Create a target and register object its method onUpdate for the Update event
 	//JS: socket.on("Update", function(data) {...});
